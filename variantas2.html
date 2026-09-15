@@ -55,6 +55,15 @@
     font-size:1.02rem;
     margin:0 0 1.6rem;
   }
+  .version-switch{
+    margin:0 0 1rem !important;
+  }
+  .version-switch a{
+    font-size:.85rem;
+    color:var(--amber);
+    text-decoration:none;
+  }
+  .version-switch a:hover{ text-decoration:underline; }
 
   .map-wrap{
     max-width:900px;
@@ -218,6 +227,8 @@
   .map-svg.has-active .marker:not(.active) circle.dot{ opacity:.3; }
   .map-svg.has-active .marker:not(.active) text{ opacity:.4; }
   .map-svg .marker.dimmed{ opacity:.15; }
+  .route{ transition:opacity .2s ease; }
+  .route.dimmed{ opacity:.12; }
   .marker.active circle.dot{ r:13; }
   .marker.active circle.halo{ opacity:1; animation:pulse 1.6s ease-in-out infinite; }
 
@@ -248,6 +259,7 @@
   <div class="hero-inner">
     <h1>Abruzzo nuo Pescara</h1>
     <p class="lead">Septyni objektai. Filtruokite pagal kryptį arba spauskite bet kurį objektą — jis sutaps su tašku žemėlapyje ir atvirkščiai.</p>
+    <p class="version-switch"><a href="index.html">← Grįžti į pagrindinę versiją</a></p>
   </div>
 
   <div class="map-wrap">
@@ -275,10 +287,10 @@
 
       <!-- routes -->
       <g fill="none" stroke-width="2.2" stroke-dasharray="1 6" stroke-linecap="round" opacity=".8">
-        <path d="M448,123 L492,194 L503,225 L563,356" stroke="var(--sea)"/>
-        <path d="M448,123 L294,135 L257,195" stroke="var(--olive)"/>
-        <path d="M448,123 L366,475" stroke="var(--clay)"/>
-        <path d="M448,123 L43,492" stroke="var(--roma)"/>
+        <path class="route" data-group="coast" d="M448,123 L492,194 L503,225 L563,356" stroke="var(--sea)"/>
+        <path class="route" data-group="mountain" d="M448,123 L294,135 L257,195" stroke="var(--olive)"/>
+        <path class="route" data-group="deep" d="M448,123 L366,475" stroke="var(--clay)"/>
+        <path class="route" data-group="roma" d="M448,123 L43,492" stroke="var(--roma)"/>
       </g>
 
       <!-- Pescara -->
@@ -347,7 +359,7 @@
     <button class="tab active" data-filter="all">Visi</button>
     <button class="tab" data-filter="coast"><span class="dot" style="background:var(--sea)"></span>Pakrantė</button>
     <button class="tab" data-filter="mountain"><span class="dot" style="background:var(--olive)"></span>Kalnai</button>
-    <button class="tab" data-filter="deep"><span class="dot" style="background:var(--clay)"></span>Scanno</button>
+    <button class="tab" data-filter="deep"><span class="dot" style="background:var(--clay)"></span>Kalnų ežeras</button>
     <button class="tab" data-filter="roma"><span class="dot" style="background:var(--roma)"></span>Roma</button>
   </div>
 </div>
@@ -396,7 +408,7 @@
     </button>
 
     <button class="card" data-id="6" data-group="deep" data-num="06" style="--group-color:var(--clay)">
-      <span class="card-eyebrow"><span class="dot"></span>Scanno · 110 km</span>
+      <span class="card-eyebrow"><span class="dot"></span>Kalnų ežeras · 110 km</span>
       <p class="card-title">Lago di Scanno</p>
       <span class="chips"><span class="chip">1 val. 50 min</span><span class="chip">per Sulmoną</span></span>
       <p class="card-desc">Didžiausias natūralus ežeras Abruzzo regione, atsiradęs po nuošliaužos. Aplink — pėsčiųjų takai ir du paplūdimiai maudytis vasarą. Miestelyje veikia kėdučių keltuvas „Seggiovia Colle Rotondo“ (~1600 m) — dažnai dirba su pertraukomis, patikrinkite prieš vykstant (<a href="https://www.visitscanno.com/poi-scanno/seggiovia-scanno/" target="_blank" rel="noopener">šaltinis</a>).</p>
@@ -464,6 +476,8 @@
     });
   });
 
+  const routes = document.querySelectorAll('.route');
+
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
       tabs.forEach(t => t.classList.remove('active'));
@@ -475,6 +489,9 @@
       });
       markers.forEach(m => {
         m.classList.toggle('dimmed', filter !== 'all' && m.dataset.group !== filter);
+      });
+      routes.forEach(r => {
+        r.classList.toggle('dimmed', filter !== 'all' && r.dataset.group !== filter);
       });
 
       if (selected){
