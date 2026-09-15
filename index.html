@@ -22,6 +22,8 @@
     --olive-tint:rgba(143,190,107,.16);
     --clay:#D98B4F;
     --clay-tint:rgba(217,139,79,.16);
+    --roma:#D4AF6A;
+    --roma-tint:rgba(212,175,106,.16);
 
     --card-bg:var(--panel);
     --radius:6px;
@@ -217,6 +219,12 @@
     margin:0;
     max-width:60ch;
   }
+  .card-desc a{
+    color:var(--amber);
+    text-decoration:underline;
+    text-underline-offset:2px;
+  }
+  .card-desc a:hover{ color:var(--ink); }
 
   /* ---------- SVG map markers ---------- */
   .marker circle.dot{ transition:r .18s ease, opacity .18s ease; }
@@ -275,7 +283,7 @@
 
 <div class="hero">
   <h1>Abruzzo nuo Pescara</h1>
-  <p>Šeši objektai, sugrupuoti į tris kryptis. Pasirinkite objektą sąraše — jis bus pažymėtas žemėlapyje.</p>
+  <p>Septyni objektai, sugrupuoti į keturias kryptis. Pasirinkite objektą sąraše — jis bus pažymėtas žemėlapyje.</p>
 </div>
 
 <div class="layout">
@@ -294,65 +302,72 @@
 
       <!-- mountain texture -->
       <g fill="none" stroke="#26333A" stroke-width="1">
-        <ellipse cx="150" cy="300" rx="230" ry="255" transform="rotate(-12 150 300)"/>
-        <ellipse cx="150" cy="300" rx="175" ry="195" transform="rotate(-12 150 300)"/>
-        <ellipse cx="150" cy="300" rx="115" ry="128" transform="rotate(-12 150 300)"/>
-        <ellipse cx="235" cy="600" rx="195" ry="225" transform="rotate(6 235 600)"/>
-        <ellipse cx="235" cy="600" rx="135" ry="155" transform="rotate(6 235 600)"/>
+        <ellipse cx="280" cy="205" rx="250" ry="215" transform="rotate(-10 280 205)"/>
+        <ellipse cx="280" cy="205" rx="190" ry="165" transform="rotate(-10 280 205)"/>
+        <ellipse cx="280" cy="205" rx="125" ry="108" transform="rotate(-10 280 205)"/>
+        <ellipse cx="330" cy="560" rx="225" ry="225" transform="rotate(5 330 560)"/>
+        <ellipse cx="330" cy="560" rx="160" ry="160" transform="rotate(5 330 560)"/>
       </g>
 
       <!-- sea -->
-      <polygon points="306,0 355,127 397,211 448,296 507,397 552,760 620,760 620,0" fill="#182A33"/>
-      <polyline points="306,0 355,127 397,211 448,296 507,397 552,760" fill="none" stroke="var(--sea)" stroke-width="1.4" opacity=".5"/>
+      <polygon points="409,0 440,120 468,200 503,280 543,376 573,720 620,760 620,0" fill="#182A33"/>
+      <polyline points="409,0 440,120 468,200 503,280 543,376 573,720" fill="none" stroke="var(--sea)" stroke-width="1.4" opacity=".5"/>
 
       <!-- routes -->
       <g fill="none" stroke-width="2.4" stroke-dasharray="1 7" stroke-linecap="round" opacity=".85">
-        <path d="M367,159 L432,252 L448,291 L536,461" stroke="var(--sea)"/>
-        <path d="M367,159 L140,175 L86,253" stroke="var(--olive)"/>
-        <path d="M367,159 L246,615" stroke="var(--clay)"/>
+        <path d="M448,151 L492,238 L503,275 L563,436" stroke="var(--sea)"/>
+        <path d="M448,151 L294,166 L257,239" stroke="var(--olive)"/>
+        <path d="M448,151 L366,583" stroke="var(--clay)"/>
+        <path d="M448,151 L43,603" stroke="var(--roma)"/>
       </g>
 
       <!-- Pescara -->
       <g>
-        <circle cx="367" cy="159" r="8" fill="var(--amber)" stroke="var(--bg)" stroke-width="2"/>
-        <text x="367" y="140" text-anchor="middle" font-family="Bricolage Grotesque" font-size="12" font-weight="700" fill="var(--amber)">PESCARA</text>
+        <circle cx="448" cy="151" r="8" fill="var(--amber)" stroke="var(--bg)" stroke-width="2"/>
+        <text x="448" y="132" text-anchor="middle" font-family="Bricolage Grotesque" font-size="12" font-weight="700" fill="var(--amber)">PESCARA</text>
       </g>
 
       <!-- markers -->
-      <g class="marker" data-id="1" data-group="coast" transform="translate(432,252)">
+      <g class="marker" data-id="1" data-group="coast" transform="translate(492,238)">
         <circle class="halo" r="13" fill="var(--sea)"/>
         <circle class="dot" r="11" fill="var(--sea)" stroke="var(--bg)" stroke-width="2"/>
         <text y="1">1</text>
       </g>
 
-      <g class="marker" data-id="2" data-group="coast" transform="translate(448,291)">
+      <g class="marker" data-id="2" data-group="coast" transform="translate(503,275)">
         <circle class="halo" r="13" fill="var(--sea)"/>
         <circle class="dot" r="11" fill="var(--sea)" stroke="var(--bg)" stroke-width="2"/>
         <text y="1">2</text>
       </g>
 
-      <g class="marker" data-id="3" data-group="coast" transform="translate(536,461)">
+      <g class="marker" data-id="3" data-group="coast" transform="translate(563,436)">
         <circle class="halo" r="13" fill="var(--sea)"/>
         <circle class="dot" r="11" fill="var(--sea)" stroke="var(--bg)" stroke-width="2"/>
         <text y="1">3</text>
       </g>
 
-      <g class="marker" data-id="4" data-group="mountain" transform="translate(86,253)">
+      <g class="marker" data-id="4" data-group="mountain" transform="translate(257,239)">
         <circle class="halo" r="13" fill="var(--olive)"/>
         <circle class="dot" r="11" fill="var(--olive)" stroke="var(--bg)" stroke-width="2"/>
         <text y="1">4</text>
       </g>
 
-      <g class="marker" data-id="5" data-group="mountain" transform="translate(140,175)">
+      <g class="marker" data-id="5" data-group="mountain" transform="translate(294,166)">
         <circle class="halo" r="13" fill="var(--olive)"/>
         <circle class="dot" r="11" fill="var(--olive)" stroke="var(--bg)" stroke-width="2"/>
         <text y="1">5</text>
       </g>
 
-      <g class="marker" data-id="6" data-group="deep" transform="translate(246,615)">
+      <g class="marker" data-id="6" data-group="deep" transform="translate(366,583)">
         <circle class="halo" r="13" fill="var(--clay)"/>
         <circle class="dot" r="11" fill="var(--clay)" stroke="var(--bg)" stroke-width="2"/>
         <text y="1">6</text>
+      </g>
+
+      <g class="marker" data-id="7" data-group="roma" transform="translate(43,603)">
+        <circle class="halo" r="13" fill="var(--roma)"/>
+        <circle class="dot" r="11" fill="var(--roma)" stroke="var(--bg)" stroke-width="2"/>
+        <text y="1">7</text>
       </g>
     </svg>
 
@@ -363,6 +378,7 @@
       <span class="legend-item"><span class="legend-dot" style="background:var(--sea)"></span>Pakrantė</span>
       <span class="legend-item"><span class="legend-dot" style="background:var(--olive)"></span>Kalnai</span>
       <span class="legend-item"><span class="legend-dot" style="background:var(--clay)"></span>Scanno</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--roma)"></span>Roma</span>
     </div>
   </div>
 
@@ -429,7 +445,7 @@
           <span>
             <p class="card-title">Funivia Campo Imperatore</p>
             <span class="chips"><span class="chip">90 km</span><span class="chip">1 val. 15 min</span></span>
-            <p class="card-desc">Funikulierius nuo Assergi kelia į Campo Imperatore plokščiakalnę (~2100 m), vadinamą „mažuoju Tibetu“. Gran Sasso e Monti della Laga parke — žygiai pėsčiomis ir vaizdai į Corno Grande viršūnę.</p>
+            <p class="card-desc">Funikulierius nuo Assergi kelia į Campo Imperatore plokščiakalnę (~2100 m), vadinamą „mažuoju Tibetu“. Gran Sasso e Monti della Laga parke — žygiai pėsčiomis ir vaizdai į Corno Grande viršūnę. Čia veikia garsiausias regiono keltuvas „Funivia del Gran Sasso d'Italia“ — didelės gondolos kelia iš Fonte Cerreto slėnio tiesiai į plokščiakalnę ir yra pagrindinis keltuvas keliautojams bei slidininkams (<a href="https://www.ilgransasso.it/la-stazione/" target="_blank" rel="noopener">šaltinis</a>, <a href="https://www.laquilablog.it/funivia-del-gran-sasso-dal-1-agosto-prima-corsa-anticipata-alle-8/" target="_blank" rel="noopener">šaltinis</a>).</p>
           </span>
         </button>
 
@@ -449,7 +465,27 @@
           <span>
             <p class="card-title">Lago di Scanno</p>
             <span class="chips"><span class="chip">110 km</span><span class="chip">1 val. 50 min</span></span>
-            <p class="card-desc">Didžiausias natūralus ežeras Abruzzo regione, susiformavęs po nuošliaužos, užtvenkusios Tasso upę. Vietinių legendų siejamas su širdies forma. Aplink ežerą — pėsčiųjų takai ir du paplūdimiai maudytis vasarą.</p>
+            <p class="card-desc">Didžiausias natūralus ežeras Abruzzo regione, susiformavęs po nuošliaužos, užtvenkusios Tasso upę. Vietinių legendų siejamas su širdies forma. Aplink ežerą — pėsčiųjų takai ir du paplūdimiai maudytis vasarą. Pačiame Scanno miestelyje veikia kėdučių keltuvas „Seggiovia Colle Rotondo“, keliantis į ~1600 m aukščio viršukalnę su gražiais kalnų vaizdais — tačiau pastaraisiais metais jis dažnai dirba su pertraukomis arba būna uždarytas, tad prieš kelionę verta pasitikrinti vietinę informaciją (<a href="https://www.tripadvisor.com/Attraction_Review-g194910-d6997834-Reviews-Seggiovia_Monte_Rotondo-Scanno_Province_of_L_Aquila_Abruzzo.html" target="_blank" rel="noopener">šaltinis</a>, <a href="https://www.visitscanno.com/poi-scanno/seggiovia-scanno/" target="_blank" rel="noopener">šaltinis</a>).</p>
+          </span>
+        </button>
+
+      </div>
+    </section>
+
+    <section class="group" style="--group-color:#D4AF6A; --group-tint:rgba(212,175,106,.16);">
+      <div class="group-head">
+        <h2>4 kryptis — Roma</h2>
+        <span class="group-road">A25 / A24 greitkeliu, į vakarus</span>
+      </div>
+      <p class="group-note">Toliausiai nutolusi kryptis šiame sąraše — geriau vykti kaip atskirą dienos ar dviejų dienų išvyką, o ne derinti su kitais objektais tą pačią dieną.</p>
+      <div class="cards">
+
+        <button class="card" data-id="7">
+          <span class="num">7</span>
+          <span>
+            <p class="card-title">Roma</p>
+            <span class="chips"><span class="chip">207 km</span><span class="chip">~2 val.</span></span>
+            <p class="card-desc">Italijos sostinė su pasaulinio garso istoriniu centru — Koliziejumi, Romos forumu, Vatikanu. Kelias veda per A25 ir A24 greitkelius per Apeninus.</p>
           </span>
         </button>
 
