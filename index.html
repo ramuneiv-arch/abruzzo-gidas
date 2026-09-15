@@ -61,6 +61,15 @@
     font-size:1.02rem;
     margin:0;
   }
+  .version-switch{
+    margin:.7rem 0 0 !important;
+  }
+  .version-switch a{
+    font-size:.85rem;
+    color:var(--amber);
+    text-decoration:none;
+  }
+  .version-switch a:hover{ text-decoration:underline; }
 
   /* ---------- Layout ---------- */
   .layout{
@@ -112,6 +121,43 @@
     display:inline-block;
     flex-shrink:0;
   }
+
+  .tabs{
+    display:flex;
+    flex-wrap:wrap;
+    gap:.5rem;
+    padding:0 0 .8rem;
+    border-top:1px solid var(--line);
+    margin-top:.2rem;
+    padding-top:.9rem;
+  }
+  .tab{
+    border:1px solid var(--line);
+    background:transparent;
+    color:var(--ink-soft);
+    font-size:.8rem;
+    font-weight:500;
+    padding:.4rem .85rem;
+    border-radius:999px;
+    cursor:pointer;
+    font-family:'Work Sans', sans-serif;
+    transition:border-color .15s ease, color .15s ease, background-color .15s ease;
+  }
+  .tab .dot{
+    display:inline-block;
+    width:7px;height:7px;border-radius:50%;
+    margin-right:.4rem;
+  }
+  .tab:hover{ border-color:var(--ink-soft); color:var(--ink); }
+  .tab.active{
+    background:var(--ink);
+    color:var(--bg);
+    border-color:var(--ink);
+  }
+
+  .route{ transition:opacity .2s ease; }
+  .route.dimmed{ opacity:.12; }
+  .card.hidden{ display:none; }
 
   /* ---------- List / groups ---------- */
   .group{
@@ -255,6 +301,7 @@
   }
   .map-svg.has-active .marker:not(.active) circle.dot{ opacity:.35; }
   .map-svg.has-active .marker:not(.active) text{ opacity:.5; }
+  .marker.dimmed{ opacity:.15; }
   .marker.active circle.dot{ r:13; }
   .marker.active circle.halo{
     opacity:1;
@@ -297,6 +344,7 @@
 <div class="hero">
   <h1>Abruzzo nuo Pescara</h1>
   <p>Septyni objektai, sugrupuoti į keturias kryptis. Pasirinkite objektą sąraše — jis bus pažymėtas žemėlapyje.</p>
+  <p class="version-switch"><a href="variantas2.html">Kitas dizainas (labiau pritaikytas telefonui) →</a></p>
 </div>
 
 <div class="layout">
@@ -328,10 +376,10 @@
 
       <!-- routes -->
       <g fill="none" stroke-width="2.4" stroke-dasharray="1 7" stroke-linecap="round" opacity=".85">
-        <path d="M448,151 L492,238 L503,275 L563,436" stroke="var(--sea)"/>
-        <path d="M448,151 L294,166 L257,239" stroke="var(--olive)"/>
-        <path d="M448,151 L366,583" stroke="var(--clay)"/>
-        <path d="M448,151 L43,603" stroke="var(--roma)"/>
+        <path class="route" data-group="coast" d="M448,151 L492,238 L503,275 L563,436" stroke="var(--sea)"/>
+        <path class="route" data-group="mountain" d="M448,151 L294,166 L257,239" stroke="var(--olive)"/>
+        <path class="route" data-group="deep" d="M448,151 L366,583" stroke="var(--clay)"/>
+        <path class="route" data-group="roma" d="M448,151 L43,603" stroke="var(--roma)"/>
       </g>
 
       <!-- Pescara -->
@@ -407,8 +455,16 @@
       <span class="legend-item"><span class="legend-dot" style="background:var(--amber)"></span>Pescara (startas)</span>
       <span class="legend-item"><span class="legend-dot" style="background:var(--sea)"></span>Pakrantė</span>
       <span class="legend-item"><span class="legend-dot" style="background:var(--olive)"></span>Kalnai</span>
-      <span class="legend-item"><span class="legend-dot" style="background:var(--clay)"></span>Scanno</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--clay)"></span>Kalnų ežeras</span>
       <span class="legend-item"><span class="legend-dot" style="background:var(--roma)"></span>Roma</span>
+    </div>
+
+    <div class="tabs" id="tabs">
+      <button class="tab active" data-filter="all">Visi</button>
+      <button class="tab" data-filter="coast"><span class="dot" style="background:var(--sea)"></span>Pakrantė</button>
+      <button class="tab" data-filter="mountain"><span class="dot" style="background:var(--olive)"></span>Kalnai</button>
+      <button class="tab" data-filter="deep"><span class="dot" style="background:var(--clay)"></span>Kalnų ežeras</button>
+      <button class="tab" data-filter="roma"><span class="dot" style="background:var(--roma)"></span>Roma</button>
     </div>
   </div>
 
@@ -423,7 +479,7 @@
       <p class="group-note">Costa dei Trabocchi driekiasi apie 70&nbsp;km nuo Ortonos iki Vasto — pakeliui dešimtys medinių žvejybos konstrukcijų, dalis paverstos restoranais. Visi trys taškai tinka vienai dienai.</p>
       <div class="cards">
 
-        <button class="card" data-id="1">
+        <button class="card" data-id="1" data-group="coast">
           <span class="num">1</span>
           <span>
             <p class="card-title">Ortona</p>
@@ -433,7 +489,7 @@
           </span>
         </button>
 
-        <button class="card" data-id="2">
+        <button class="card" data-id="2" data-group="coast">
           <span class="num">2</span>
           <span>
             <p class="card-title">Trabocco Punta Fornace</p>
@@ -443,7 +499,7 @@
           </span>
         </button>
 
-        <button class="card" data-id="3">
+        <button class="card" data-id="3" data-group="coast">
           <span class="num">3</span>
           <span>
             <p class="card-title">Vasto</p>
@@ -464,7 +520,7 @@
       <p class="group-note">L'Aquila ir Gran Sasso funikulierius yra tame pačiame koridoriuje, atstumas tarp jų nedidelis (~25&nbsp;km) — patogu vienai dienai.</p>
       <div class="cards">
 
-        <button class="card" data-id="4">
+        <button class="card" data-id="4" data-group="mountain">
           <span class="num">4</span>
           <span>
             <p class="card-title">L'Aquila</p>
@@ -474,7 +530,7 @@
           </span>
         </button>
 
-        <button class="card" data-id="5">
+        <button class="card" data-id="5" data-group="mountain">
           <span class="num">5</span>
           <span>
             <p class="card-title">Funivia Campo Imperatore</p>
@@ -495,7 +551,7 @@
       <p class="group-note">Labiausiai nutolęs ir sunkiausiai pasiekiamas objektas — kalnuotas, siauras kelias. Rekomenduojama skirti atskirą dieną.</p>
       <div class="cards">
 
-        <button class="card" data-id="6">
+        <button class="card" data-id="6" data-group="deep">
           <span class="num">6</span>
           <span>
             <p class="card-title">Lago di Scanno</p>
@@ -516,7 +572,7 @@
       <p class="group-note">Toliausiai nutolusi kryptis šiame sąraše — geriau vykti kaip atskirą dienos ar dviejų dienų išvyką, o ne derinti su kitais objektais tą pačią dieną.</p>
       <div class="cards">
 
-        <button class="card" data-id="7">
+        <button class="card" data-id="7" data-group="roma">
           <span class="num">7</span>
           <span>
             <p class="card-title">Roma</p>
@@ -560,6 +616,39 @@
         mapPanel.classList.add('has-active');
         const marker = document.querySelector('.marker[data-id="'+id+'"]');
         if (marker) marker.classList.add('active');
+      }
+    });
+  });
+
+  const routes = document.querySelectorAll('.route');
+  const tabs = document.querySelectorAll('.tab');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const filter = tab.dataset.filter;
+
+      cards.forEach(c => {
+        c.classList.toggle('hidden', filter !== 'all' && c.dataset.group !== filter);
+      });
+      markers.forEach(m => {
+        m.classList.toggle('dimmed', filter !== 'all' && m.dataset.group !== filter);
+      });
+      routes.forEach(r => {
+        r.classList.toggle('dimmed', filter !== 'all' && r.dataset.group !== filter);
+      });
+
+      const activeCard = document.querySelector('.card.active');
+      if (activeCard){
+        const stillVisible = filter === 'all' || activeCard.dataset.group === filter;
+        if (!stillVisible){
+          activeCard.classList.remove('active');
+          activeCard.setAttribute('aria-pressed','false');
+          markers.forEach(m => m.classList.remove('active'));
+          svg.classList.remove('has-active');
+          mapPanel.classList.remove('has-active');
+        }
       }
     });
   });
