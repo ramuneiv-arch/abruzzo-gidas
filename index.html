@@ -226,7 +226,20 @@
   }
   .card-desc a:hover{ color:var(--ink); }
 
+  .map-link{
+    display:inline-flex;
+    align-items:center;
+    gap:.3rem;
+    margin-top:.5rem;
+    font-size:.82rem;
+    font-weight:600;
+    color:var(--group-color, var(--sea));
+    text-decoration:none;
+  }
+  .map-link:hover{ text-decoration:underline; }
+
   /* ---------- SVG map markers ---------- */
+  .map-svg a{ cursor:pointer; }
   .marker circle.dot{ transition:r .18s ease, opacity .18s ease; }
   .marker circle.halo{
     opacity:0;
@@ -322,54 +335,71 @@
       </g>
 
       <!-- Pescara -->
+      <a href="https://www.google.com/maps?q=42.4618,14.2160" target="_blank" rel="noopener">
       <g>
         <circle cx="448" cy="151" r="8" fill="var(--amber)" stroke="var(--bg)" stroke-width="2"/>
         <text x="448" y="132" text-anchor="middle" font-family="Bricolage Grotesque" font-size="12" font-weight="700" fill="var(--amber)">PESCARA</text>
       </g>
+      </a>
 
       <!-- markers -->
+      <a href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.3521,14.4027&travelmode=driving" target="_blank" rel="noopener">
       <g class="marker" data-id="1" data-group="coast" transform="translate(492,238)">
         <circle class="halo" r="13" fill="var(--sea)"/>
         <circle class="dot" r="11" fill="var(--sea)" stroke="var(--bg)" stroke-width="2"/>
         <text y="1">1</text>
       </g>
+      </a>
 
+      <a href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.3057,14.4510&travelmode=driving" target="_blank" rel="noopener">
       <g class="marker" data-id="2" data-group="coast" transform="translate(503,275)">
         <circle class="halo" r="13" fill="var(--sea)"/>
         <circle class="dot" r="11" fill="var(--sea)" stroke="var(--bg)" stroke-width="2"/>
         <text y="1">2</text>
       </g>
+      </a>
 
+      <a href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.1046,14.7059&travelmode=driving" target="_blank" rel="noopener">
       <g class="marker" data-id="3" data-group="coast" transform="translate(563,436)">
         <circle class="halo" r="13" fill="var(--sea)"/>
         <circle class="dot" r="11" fill="var(--sea)" stroke="var(--bg)" stroke-width="2"/>
         <text y="1">3</text>
       </g>
+      </a>
 
+      <a href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.3507,13.3999&travelmode=driving" target="_blank" rel="noopener">
       <g class="marker" data-id="4" data-group="mountain" transform="translate(257,239)">
         <circle class="halo" r="13" fill="var(--olive)"/>
         <circle class="dot" r="11" fill="var(--olive)" stroke="var(--bg)" stroke-width="2"/>
         <text y="1">4</text>
       </g>
+      </a>
 
+      <a href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.4428,13.5577&travelmode=driving" target="_blank" rel="noopener">
       <g class="marker" data-id="5" data-group="mountain" transform="translate(294,166)">
         <circle class="halo" r="13" fill="var(--olive)"/>
         <circle class="dot" r="11" fill="var(--olive)" stroke="var(--bg)" stroke-width="2"/>
         <text y="1">5</text>
       </g>
+      </a>
 
+      <a href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=41.9217,13.8637&travelmode=driving" target="_blank" rel="noopener">
       <g class="marker" data-id="6" data-group="deep" transform="translate(366,583)">
         <circle class="halo" r="13" fill="var(--clay)"/>
         <circle class="dot" r="11" fill="var(--clay)" stroke="var(--bg)" stroke-width="2"/>
         <text y="1">6</text>
       </g>
+      </a>
 
+      <a href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=41.8967,12.4822&travelmode=driving" target="_blank" rel="noopener">
       <g class="marker" data-id="7" data-group="roma" transform="translate(43,603)">
         <circle class="halo" r="13" fill="var(--roma)"/>
         <circle class="dot" r="11" fill="var(--roma)" stroke="var(--bg)" stroke-width="2"/>
         <text y="1">7</text>
       </g>
+      </a>
     </svg>
+
 
     <p class="map-hint" id="mapHint">Pasirinkite objektą sąraše, kad jis būtų pažymėtas žemėlapyje.</p>
 
@@ -399,6 +429,7 @@
             <p class="card-title">Ortona</p>
             <span class="chips"><span class="chip">23 km</span><span class="chip">25 min</span></span>
             <p class="card-desc">Senas pakrantės miestelis su istoriniu centru ir aukštai virš jūros esančia terasa. Pirmasis taškas, nuo kurio prasideda Costa dei Trabocchi važiuojant iš šiaurės; žinomas ir iš Antrojo pasaulinio karo istorijos (Ortonos mūšis).</p>
+            <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.3521,14.4027&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
           </span>
         </button>
 
@@ -408,6 +439,7 @@
             <p class="card-title">Trabocco Punta Fornace</p>
             <span class="chips"><span class="chip">35 km</span><span class="chip">40 min</span></span>
             <p class="card-desc">San Vito Chietino. Vienas gražiausių ir žinomiausių trabocchi — ant polių virš jūros stovinti medinė žvejybos konstrukcija, dabar veikianti kaip žuvies restoranas su vaizdu į atvirą jūrą.</p>
+            <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.3057,14.4510&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
           </span>
         </button>
 
@@ -417,6 +449,7 @@
             <p class="card-title">Vasto</p>
             <span class="chips"><span class="chip">66 km</span><span class="chip">55 min – 1 val.</span></span>
             <p class="card-desc">Ant kalvos įsikūręs viduramžių miestelis su istoriniu centru ir Palazzo d'Avalos rūmais. Netoliese — Vasto Marina ir Punta Penna paplūdimiai; pietinis Costa dei Trabocchi taškas.</p>
+            <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.1046,14.7059&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
           </span>
         </button>
 
@@ -437,6 +470,7 @@
             <p class="card-title">L'Aquila</p>
             <span class="chips"><span class="chip">68 km</span><span class="chip">1 val.</span></span>
             <p class="card-desc">Abruzzo regiono sostinė. Istorinis centras iš dalies atstatytas po 2009 m. žemės drebėjimo; verta pamatyti Baziliką di Collemaggio ir Ispanų tvirtovę (Forte Spagnolo).</p>
+            <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.3507,13.3999&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
           </span>
         </button>
 
@@ -446,6 +480,7 @@
             <p class="card-title">Funivia Campo Imperatore</p>
             <span class="chips"><span class="chip">90 km</span><span class="chip">1 val. 15 min</span></span>
             <p class="card-desc">Funikulierius nuo Assergi kelia į Campo Imperatore plokščiakalnę (~2100 m), vadinamą „mažuoju Tibetu“. Gran Sasso e Monti della Laga parke — žygiai pėsčiomis ir vaizdai į Corno Grande viršūnę. Čia veikia garsiausias regiono keltuvas „Funivia del Gran Sasso d'Italia“ — didelės gondolos kelia iš Fonte Cerreto slėnio tiesiai į plokščiakalnę ir yra pagrindinis keltuvas keliautojams bei slidininkams (<a href="https://www.ilgransasso.it/la-stazione/" target="_blank" rel="noopener">šaltinis</a>, <a href="https://www.laquilablog.it/funivia-del-gran-sasso-dal-1-agosto-prima-corsa-anticipata-alle-8/" target="_blank" rel="noopener">šaltinis</a>).</p>
+            <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.4428,13.5577&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
           </span>
         </button>
 
@@ -466,6 +501,7 @@
             <p class="card-title">Lago di Scanno</p>
             <span class="chips"><span class="chip">110 km</span><span class="chip">1 val. 50 min</span></span>
             <p class="card-desc">Didžiausias natūralus ežeras Abruzzo regione, susiformavęs po nuošliaužos, užtvenkusios Tasso upę. Vietinių legendų siejamas su širdies forma. Aplink ežerą — pėsčiųjų takai ir du paplūdimiai maudytis vasarą. Pačiame Scanno miestelyje veikia kėdučių keltuvas „Seggiovia Colle Rotondo“, keliantis į ~1600 m aukščio viršukalnę su gražiais kalnų vaizdais — tačiau pastaraisiais metais jis dažnai dirba su pertraukomis arba būna uždarytas, tad prieš kelionę verta pasitikrinti vietinę informaciją (<a href="https://www.tripadvisor.com/Attraction_Review-g194910-d6997834-Reviews-Seggiovia_Monte_Rotondo-Scanno_Province_of_L_Aquila_Abruzzo.html" target="_blank" rel="noopener">šaltinis</a>, <a href="https://www.visitscanno.com/poi-scanno/seggiovia-scanno/" target="_blank" rel="noopener">šaltinis</a>).</p>
+            <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=41.9217,13.8637&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
           </span>
         </button>
 
@@ -486,6 +522,7 @@
             <p class="card-title">Roma</p>
             <span class="chips"><span class="chip">207 km</span><span class="chip">~2 val.</span></span>
             <p class="card-desc">Italijos sostinė su pasaulinio garso istoriniu centru — Koliziejumi, Romos forumu, Vatikanu. Kelias veda per A25 ir A24 greitkelius per Apeninus.</p>
+            <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=41.8967,12.4822&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
           </span>
         </button>
 
