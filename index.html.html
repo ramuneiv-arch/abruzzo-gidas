@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abruzzo nuo Pescara — interaktyvus gidas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#12181C;
+    --panel:#1A2328;
+    --panel-2:#202B31;
+    --ink:#ECE7DD;
+    --ink-soft:#95A3A8;
+    --line:#2B363C;
+
+    --amber:#E3A857;
+    --sea:#5FA8C9;
+    --sea-tint:rgba(95,168,201,.16);
+    --olive:#8FBE6B;
+    --olive-tint:rgba(143,190,107,.16);
+    --clay:#D98B4F;
+    --clay-tint:rgba(217,139,79,.16);
+
+    --card-bg:var(--panel);
+    --radius:6px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    line-height:1.5;
+  }
+
+  h1,h2,h3,.num{
+    font-family:'Bricolage Grotesque', sans-serif;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:2.6rem 1.5rem 1.6rem;
+    max-width:1320px;
+    margin:0 auto;
+  }
+  .hero h1{
+    font-size:clamp(1.9rem, 4vw, 2.7rem);
+    font-weight:600;
+    margin:0 0 .5rem;
+    color:var(--ink);
+  }
+  .hero p{
+    max-width:56ch;
+    color:var(--ink-soft);
+    font-size:1.02rem;
+    margin:0;
+  }
+
+  /* ---------- Layout ---------- */
+  .layout{
+    max-width:1320px;
+    margin:0 auto;
+    padding:0 1.5rem 4rem;
+    display:grid;
+    grid-template-columns:minmax(380px, 620px) 1fr;
+    gap:2.2rem;
+    align-items:start;
+  }
+
+  .map-panel{
+    position:sticky;
+    top:1.2rem;
+    background:var(--card-bg);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:1rem 1rem .4rem;
+  }
+  .map-panel svg{ width:100%; height:auto; display:block; }
+
+  .map-hint{
+    font-size:.85rem;
+    color:var(--ink-soft);
+    margin:.7rem 0 .9rem;
+    min-height:1.2em;
+    transition:opacity .2s ease;
+  }
+  .map-panel.has-active .map-hint{ opacity:0; }
+
+  .legend{
+    display:flex;
+    flex-wrap:wrap;
+    gap:.9rem;
+    padding:.7rem 0 1rem;
+    border-top:1px solid var(--line);
+    margin-top:.2rem;
+  }
+  .legend-item{
+    display:flex;
+    align-items:center;
+    gap:.4rem;
+    font-size:.78rem;
+    color:var(--ink-soft);
+  }
+  .legend-dot{
+    width:9px; height:9px; border-radius:50%;
+    display:inline-block;
+    flex-shrink:0;
+  }
+
+  /* ---------- List / groups ---------- */
+  .group{
+    margin-bottom:2.2rem;
+  }
+  .group-head{
+    display:flex;
+    align-items:baseline;
+    gap:.6rem;
+    margin-bottom:.3rem;
+    border-bottom:2px solid var(--group-color, var(--sea));
+    padding-bottom:.5rem;
+  }
+  .group-head h2{
+    font-size:1.28rem;
+    font-weight:600;
+    margin:0;
+    color:var(--group-color, var(--sea));
+  }
+  .group-road{
+    font-size:.82rem;
+    color:var(--ink-soft);
+  }
+  .group-note{
+    font-size:.92rem;
+    color:var(--ink-soft);
+    margin:.6rem 0 1rem;
+    max-width:62ch;
+  }
+
+  .cards{
+    display:flex;
+    flex-direction:column;
+    gap:.65rem;
+  }
+
+  .card{
+    text-align:left;
+    background:var(--card-bg);
+    border:1px solid var(--line);
+    border-left:4px solid transparent;
+    border-radius:var(--radius);
+    padding:.95rem 1.1rem;
+    cursor:pointer;
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:0 .9rem;
+    font-family:inherit;
+    color:inherit;
+    transition:border-color .15s ease, background-color .15s ease, box-shadow .15s ease;
+  }
+  .card:hover{
+    box-shadow:0 0 0 1px var(--group-color, var(--sea)) inset, 0 4px 18px rgba(0,0,0,.35);
+  }
+  .card:focus-visible{
+    outline:2px solid var(--amber);
+    outline-offset:2px;
+  }
+  .card.active{
+    border-left-color:var(--group-color, var(--sea));
+    background:var(--group-tint, var(--sea-tint));
+  }
+
+  .num{
+    grid-row:1 / 3;
+    align-self:start;
+    width:2rem;height:2rem;
+    border-radius:50%;
+    border:1.5px solid var(--group-color, var(--sea));
+    color:var(--group-color, var(--sea));
+    display:flex;align-items:center;justify-content:center;
+    font-size:1rem;
+    font-weight:600;
+    background:var(--panel-2);
+  }
+  .card.active .num{
+    background:var(--group-color, var(--sea));
+    color:var(--bg);
+  }
+
+  .card-title{
+    font-family:'Bricolage Grotesque', sans-serif;
+    font-size:1.06rem;
+    font-weight:600;
+    margin:0 0 .2rem;
+    color:var(--ink);
+  }
+
+  .chips{
+    display:flex; gap:.4rem; flex-wrap:wrap;
+    margin-bottom:.35rem;
+  }
+  .chip{
+    font-size:.74rem;
+    color:var(--ink-soft);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:.12rem .55rem;
+    background:var(--panel-2);
+  }
+
+  .card-desc{
+    font-size:.9rem;
+    color:var(--ink-soft);
+    margin:0;
+    max-width:60ch;
+  }
+
+  /* ---------- SVG map markers ---------- */
+  .marker circle.dot{ transition:r .18s ease, opacity .18s ease; }
+  .marker circle.halo{
+    opacity:0;
+  }
+  .marker text{
+    font-family:'Bricolage Grotesque', sans-serif;
+    font-size:11px;
+    font-weight:700;
+    fill:var(--bg);
+    text-anchor:middle;
+    dominant-baseline:central;
+    pointer-events:none;
+  }
+  .map-svg.has-active .marker:not(.active) circle.dot{ opacity:.35; }
+  .map-svg.has-active .marker:not(.active) text{ opacity:.5; }
+  .marker.active circle.dot{ r:13; }
+  .marker.active circle.halo{
+    opacity:1;
+    animation:pulse 1.6s ease-in-out infinite;
+  }
+
+  @keyframes pulse{
+    0%,100%{ r:11px; opacity:.55; }
+    50%{ r:17px; opacity:.15; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .marker.active circle.halo{ animation:none; opacity:.5; }
+    html{ scroll-behavior:auto; }
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px){
+    .layout{
+      grid-template-columns:1fr;
+    }
+    .map-panel{
+      position:sticky;
+      top:0;
+      z-index:5;
+    }
+  }
+
+  footer{
+    max-width:1320px;
+    margin:0 auto;
+    padding:0 1.5rem 3rem;
+    color:var(--ink-soft);
+    font-size:.82rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Abruzzo nuo Pescara</h1>
+  <p>Šeši objektai, sugrupuoti į tris kryptis. Pasirinkite objektą sąraše — jis bus pažymėtas žemėlapyje.</p>
+</div>
+
+<div class="layout">
+
+  <!-- MAP -->
+  <div class="map-panel" id="mapPanel">
+    <svg class="map-svg" id="mapSvg" viewBox="0 0 620 760" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Abruzzo žemėlapis su pažymėtais objektais">
+      <defs>
+        <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="26"/>
+        </filter>
+      </defs>
+
+      <!-- land -->
+      <rect x="0" y="0" width="620" height="760" fill="var(--bg)"/>
+
+      <!-- mountain texture -->
+      <g fill="none" stroke="#26333A" stroke-width="1">
+        <ellipse cx="150" cy="300" rx="230" ry="255" transform="rotate(-12 150 300)"/>
+        <ellipse cx="150" cy="300" rx="175" ry="195" transform="rotate(-12 150 300)"/>
+        <ellipse cx="150" cy="300" rx="115" ry="128" transform="rotate(-12 150 300)"/>
+        <ellipse cx="235" cy="600" rx="195" ry="225" transform="rotate(6 235 600)"/>
+        <ellipse cx="235" cy="600" rx="135" ry="155" transform="rotate(6 235 600)"/>
+      </g>
+
+      <!-- sea -->
+      <polygon points="306,0 355,127 397,211 448,296 507,397 552,760 620,760 620,0" fill="#182A33"/>
+      <polyline points="306,0 355,127 397,211 448,296 507,397 552,760" fill="none" stroke="var(--sea)" stroke-width="1.4" opacity=".5"/>
+
+      <!-- routes -->
+      <g fill="none" stroke-width="2.4" stroke-dasharray="1 7" stroke-linecap="round" opacity=".85">
+        <path d="M367,159 L432,252 L448,291 L536,461" stroke="var(--sea)"/>
+        <path d="M367,159 L140,175 L86,253" stroke="var(--olive)"/>
+        <path d="M367,159 L246,615" stroke="var(--clay)"/>
+      </g>
+
+      <!-- Pescara -->
+      <g>
+        <circle cx="367" cy="159" r="8" fill="var(--amber)" stroke="var(--bg)" stroke-width="2"/>
+        <text x="367" y="140" text-anchor="middle" font-family="Bricolage Grotesque" font-size="12" font-weight="700" fill="var(--amber)">PESCARA</text>
+      </g>
+
+      <!-- markers -->
+      <g class="marker" data-id="1" data-group="coast" transform="translate(432,252)">
+        <circle class="halo" r="13" fill="var(--sea)"/>
+        <circle class="dot" r="11" fill="var(--sea)" stroke="var(--bg)" stroke-width="2"/>
+        <text y="1">1</text>
+      </g>
+
+      <g class="marker" data-id="2" data-group="coast" transform="translate(448,291)">
+        <circle class="halo" r="13" fill="var(--sea)"/>
+        <circle class="dot" r="11" fill="var(--sea)" stroke="var(--bg)" stroke-width="2"/>
+        <text y="1">2</text>
+      </g>
+
+      <g class="marker" data-id="3" data-group="coast" transform="translate(536,461)">
+        <circle class="halo" r="13" fill="var(--sea)"/>
+        <circle class="dot" r="11" fill="var(--sea)" stroke="var(--bg)" stroke-width="2"/>
+        <text y="1">3</text>
+      </g>
+
+      <g class="marker" data-id="4" data-group="mountain" transform="translate(86,253)">
+        <circle class="halo" r="13" fill="var(--olive)"/>
+        <circle class="dot" r="11" fill="var(--olive)" stroke="var(--bg)" stroke-width="2"/>
+        <text y="1">4</text>
+      </g>
+
+      <g class="marker" data-id="5" data-group="mountain" transform="translate(140,175)">
+        <circle class="halo" r="13" fill="var(--olive)"/>
+        <circle class="dot" r="11" fill="var(--olive)" stroke="var(--bg)" stroke-width="2"/>
+        <text y="1">5</text>
+      </g>
+
+      <g class="marker" data-id="6" data-group="deep" transform="translate(246,615)">
+        <circle class="halo" r="13" fill="var(--clay)"/>
+        <circle class="dot" r="11" fill="var(--clay)" stroke="var(--bg)" stroke-width="2"/>
+        <text y="1">6</text>
+      </g>
+    </svg>
+
+    <p class="map-hint" id="mapHint">Pasirinkite objektą sąraše, kad jis būtų pažymėtas žemėlapyje.</p>
+
+    <div class="legend">
+      <span class="legend-item"><span class="legend-dot" style="background:var(--amber)"></span>Pescara (startas)</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--sea)"></span>Pakrantė</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--olive)"></span>Kalnai</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--clay)"></span>Scanno</span>
+    </div>
+  </div>
+
+  <!-- LIST -->
+  <div class="list-panel">
+
+    <section class="group" style="--group-color:#5FA8C9; --group-tint:rgba(95,168,201,.16);">
+      <div class="group-head">
+        <h2>1 kryptis — Pietų pakrantė</h2>
+        <span class="group-road">SS16, į pietus nuo Pescara</span>
+      </div>
+      <p class="group-note">Costa dei Trabocchi driekiasi apie 70&nbsp;km nuo Ortonos iki Vasto — pakeliui dešimtys medinių žvejybos konstrukcijų, dalis paverstos restoranais. Visi trys taškai tinka vienai dienai.</p>
+      <div class="cards">
+
+        <button class="card" data-id="1">
+          <span class="num">1</span>
+          <span>
+            <p class="card-title">Ortona</p>
+            <span class="chips"><span class="chip">23 km</span><span class="chip">25 min</span></span>
+            <p class="card-desc">Senas pakrantės miestelis su istoriniu centru ir aukštai virš jūros esančia terasa. Pirmasis taškas, nuo kurio prasideda Costa dei Trabocchi važiuojant iš šiaurės; žinomas ir iš Antrojo pasaulinio karo istorijos (Ortonos mūšis).</p>
+          </span>
+        </button>
+
+        <button class="card" data-id="2">
+          <span class="num">2</span>
+          <span>
+            <p class="card-title">Trabocco Punta Fornace</p>
+            <span class="chips"><span class="chip">35 km</span><span class="chip">40 min</span></span>
+            <p class="card-desc">San Vito Chietino. Vienas gražiausių ir žinomiausių trabocchi — ant polių virš jūros stovinti medinė žvejybos konstrukcija, dabar veikianti kaip žuvies restoranas su vaizdu į atvirą jūrą.</p>
+          </span>
+        </button>
+
+        <button class="card" data-id="3">
+          <span class="num">3</span>
+          <span>
+            <p class="card-title">Vasto</p>
+            <span class="chips"><span class="chip">66 km</span><span class="chip">55 min – 1 val.</span></span>
+            <p class="card-desc">Ant kalvos įsikūręs viduramžių miestelis su istoriniu centru ir Palazzo d'Avalos rūmais. Netoliese — Vasto Marina ir Punta Penna paplūdimiai; pietinis Costa dei Trabocchi taškas.</p>
+          </span>
+        </button>
+
+      </div>
+    </section>
+
+    <section class="group" style="--group-color:#8FBE6B; --group-tint:rgba(143,190,107,.16);">
+      <div class="group-head">
+        <h2>2 kryptis — Vakarų kalnai</h2>
+        <span class="group-road">A25 greitkeliu, į vakarus</span>
+      </div>
+      <p class="group-note">L'Aquila ir Gran Sasso funikulierius yra tame pačiame koridoriuje, atstumas tarp jų nedidelis (~25&nbsp;km) — patogu vienai dienai.</p>
+      <div class="cards">
+
+        <button class="card" data-id="4">
+          <span class="num">4</span>
+          <span>
+            <p class="card-title">L'Aquila</p>
+            <span class="chips"><span class="chip">68 km</span><span class="chip">1 val.</span></span>
+            <p class="card-desc">Abruzzo regiono sostinė. Istorinis centras iš dalies atstatytas po 2009 m. žemės drebėjimo; verta pamatyti Baziliką di Collemaggio ir Ispanų tvirtovę (Forte Spagnolo).</p>
+          </span>
+        </button>
+
+        <button class="card" data-id="5">
+          <span class="num">5</span>
+          <span>
+            <p class="card-title">Funivia Campo Imperatore</p>
+            <span class="chips"><span class="chip">90 km</span><span class="chip">1 val. 15 min</span></span>
+            <p class="card-desc">Funikulierius nuo Assergi kelia į Campo Imperatore plokščiakalnę (~2100 m), vadinamą „mažuoju Tibetu“. Gran Sasso e Monti della Laga parke — žygiai pėsčiomis ir vaizdai į Corno Grande viršūnę.</p>
+          </span>
+        </button>
+
+      </div>
+    </section>
+
+    <section class="group" style="--group-color:#D98B4F; --group-tint:rgba(217,139,79,.16);">
+      <div class="group-head">
+        <h2>3 kryptis — Giliai kalnuose</h2>
+        <span class="group-road">per Sulmoną, SS17/SS83</span>
+      </div>
+      <p class="group-note">Labiausiai nutolęs ir sunkiausiai pasiekiamas objektas — kalnuotas, siauras kelias. Rekomenduojama skirti atskirą dieną.</p>
+      <div class="cards">
+
+        <button class="card" data-id="6">
+          <span class="num">6</span>
+          <span>
+            <p class="card-title">Lago di Scanno</p>
+            <span class="chips"><span class="chip">110 km</span><span class="chip">1 val. 50 min</span></span>
+            <p class="card-desc">Didžiausias natūralus ežeras Abruzzo regione, susiformavęs po nuošliaužos, užtvenkusios Tasso upę. Vietinių legendų siejamas su širdies forma. Aplink ežerą — pėsčiųjų takai ir du paplūdimiai maudytis vasarą.</p>
+          </span>
+        </button>
+
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<footer>
+  Atstumai — apytiksliai, keliu (ne tiesia linija), pagal SS16, A14, A25, SS17/SS83 kelius.
+</footer>
+
+<script>
+  const cards = document.querySelectorAll('.card');
+  const markers = document.querySelectorAll('.marker');
+  const svg = document.getElementById('mapSvg');
+  const mapPanel = document.getElementById('mapPanel');
+
+  cards.forEach(card => {
+    card.setAttribute('aria-pressed', 'false');
+    card.addEventListener('click', () => {
+      const id = card.getAttribute('data-id');
+      const isActive = card.classList.contains('active');
+
+      cards.forEach(c => { c.classList.remove('active'); c.setAttribute('aria-pressed','false'); });
+      markers.forEach(m => m.classList.remove('active'));
+      svg.classList.remove('has-active');
+      mapPanel.classList.remove('has-active');
+
+      if (!isActive){
+        card.classList.add('active');
+        card.setAttribute('aria-pressed','true');
+        svg.classList.add('has-active');
+        mapPanel.classList.add('has-active');
+        const marker = document.querySelector('.marker[data-id="'+id+'"]');
+        if (marker) marker.classList.add('active');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
