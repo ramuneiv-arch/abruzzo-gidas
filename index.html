@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Abruzzo nuo Pescara — interaktyvus gidas</title>
+<title>Abruzzo nuo Pescaros</title>
+<meta name="description" content="Aštuonios vietos, sugrupuotos į penkias kryptis. Paspauskite vietą sąraše, ir ji bus pažymėta žemėlapyje, arba paspauskite skaičių žemėlapyje, ir atsidarys jos aprašymas.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <style>
   :root{
     --bg:#12181C;
@@ -14,741 +16,263 @@
     --ink:#ECE7DD;
     --ink-soft:#95A3A8;
     --line:#2B363C;
-
     --amber:#E3A857;
-    --sea:#5FA8C9;
-    --sea-tint:rgba(95,168,201,.16);
-    --olive:#8FBE6B;
-    --olive-tint:rgba(143,190,107,.16);
-    --clay:#D98B4F;
-    --clay-tint:rgba(217,139,79,.16);
-    --roma:#D4AF6A;
-    --roma-tint:rgba(212,175,106,.16);
-    --cave:#B98CE0;
-    --cave-tint:rgba(185,140,224,.16);
-
-    --card-bg:var(--panel);
     --radius:6px;
   }
-
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Work Sans', sans-serif;
-    line-height:1.5;
-  }
-
-  h1,h2,h3,.num{
-    font-family:'Bricolage Grotesque', sans-serif;
-  }
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Work Sans',sans-serif;line-height:1.5;}
+  h1,h2,.num,.card-title{font-family:'Bricolage Grotesque',sans-serif;}
+  a{color:inherit;}
 
   /* ---------- Hero ---------- */
-  .hero{
-    padding:2.6rem 1.5rem 1.6rem;
-    max-width:1320px;
-    margin:0 auto;
-  }
-  .hero h1{
-    font-size:clamp(1.9rem, 4vw, 2.7rem);
-    font-weight:600;
-    margin:0 0 .5rem;
-    color:var(--ink);
-  }
-  .hero p{
-    max-width:56ch;
-    color:var(--ink-soft);
-    font-size:1.02rem;
-    margin:0;
-  }
-  .version-switch{
-    margin:.7rem 0 0 !important;
-  }
-  .version-switch a{
-    font-size:.85rem;
-    color:var(--amber);
-    text-decoration:none;
-  }
-  .version-switch a:hover{ text-decoration:underline; }
+  .hero{padding:2.6rem 1.5rem 1.6rem;max-width:1320px;margin:0 auto;}
+  .hero h1{font-size:clamp(1.9rem,4vw,2.7rem);font-weight:600;margin:0 0 .5rem;}
+  .hero p{max-width:60ch;color:var(--ink-soft);font-size:1.02rem;margin:0;}
+  .facts{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:1rem;}
+  .facts span{font-size:.8rem;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:.2rem .7rem;background:var(--panel);}
 
   /* ---------- Layout ---------- */
-  .layout{
-    max-width:1320px;
-    margin:0 auto;
-    padding:0 1.5rem 4rem;
-    display:grid;
-    grid-template-columns:minmax(380px, 620px) 1fr;
-    gap:2.2rem;
-    align-items:start;
+  .layout{max-width:1320px;margin:0 auto;padding:0 1.5rem 4rem;display:grid;grid-template-columns:minmax(360px,600px) 1fr;gap:2.2rem;align-items:start;}
+  .map-panel{position:sticky;top:1.2rem;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:.8rem .8rem .2rem;}
+  #map{height:min(70vh,640px);border-radius:4px;background:#182A33;}
+  .map-hint{font-size:.85rem;color:var(--ink-soft);margin:.7rem 0 .6rem;}
+
+  .tabs{display:flex;flex-wrap:wrap;gap:.5rem;padding:.8rem 0;border-top:1px solid var(--line);}
+  .tab{border:1px solid var(--line);background:transparent;color:var(--ink-soft);font:500 .8rem 'Work Sans',sans-serif;padding:.4rem .85rem;border-radius:999px;cursor:pointer;transition:border-color .15s,color .15s,background-color .15s;}
+  .tab .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:.4rem;}
+  .tab:hover{border-color:var(--ink-soft);color:var(--ink);}
+  .tab.active{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+
+  /* ---------- Groups and cards ---------- */
+  .group{margin-bottom:2.2rem;}
+  .group.hidden{display:none;}
+  .group-head{border-bottom:2px solid var(--gc);padding-bottom:.5rem;margin-bottom:.3rem;}
+  .group-label{font-size:.75rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);}
+  .group-head h2{font-size:1.28rem;font-weight:600;margin:0;color:var(--gc);}
+  .group-road{font-size:.82rem;color:var(--ink-soft);}
+  .group-note{font-size:.92rem;color:var(--ink-soft);margin:.6rem 0 1rem;max-width:62ch;}
+  .cards{display:flex;flex-direction:column;gap:.65rem;}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-left:4px solid transparent;border-radius:var(--radius);padding:.95rem 1.1rem;cursor:pointer;display:grid;grid-template-columns:auto 1fr;gap:0 .9rem;transition:border-color .15s,background-color .15s,box-shadow .15s;scroll-margin-top:1rem;}
+  .card:hover{box-shadow:0 0 0 1px var(--gc) inset,0 4px 18px rgba(0,0,0,.35);}
+  .card:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
+  .card.active{border-left-color:var(--gc);background:var(--gt);}
+  .num{align-self:start;width:2rem;height:2rem;border-radius:50%;border:1.5px solid var(--gc);color:var(--gc);display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:600;background:var(--panel-2);}
+  .card.active .num{background:var(--gc);color:var(--bg);}
+  .card-title{font-size:1.06rem;font-weight:600;margin:0 0 .2rem;}
+  .chips{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.35rem;}
+  .chip{font-size:.74rem;color:var(--ink-soft);border:1px solid var(--line);border-radius:999px;padding:.12rem .55rem;background:var(--panel-2);}
+  .card-desc{font-size:.9rem;color:var(--ink-soft);margin:0;max-width:62ch;}
+  .warn{font-size:.85rem;color:var(--ink);margin:.55rem 0 0;padding:.45rem .7rem;border-left:3px solid var(--amber);background:rgba(227,168,87,.1);border-radius:0 4px 4px 0;max-width:62ch;}
+  .sources{font-size:.78rem;color:var(--ink-soft);margin:.45rem 0 0;}
+  .sources a{color:var(--ink-soft);text-underline-offset:2px;}
+  .sources a:hover{color:var(--ink);}
+  .links{margin-top:.5rem;}
+  .map-link{display:inline-block;margin:0 1rem .15rem 0;font-size:.82rem;font-weight:600;color:var(--gc);text-decoration:none;}
+  .map-link:hover{text-decoration:underline;}
+  .food-link{opacity:.8;}
+  .nearby{margin-top:.8rem;padding-top:.7rem;border-top:1px dashed var(--line);}
+  .nearby-title{font-size:.78rem;font-weight:600;color:var(--ink-soft);margin:0 0 .4rem;}
+  .nearby ul{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.3rem;}
+  .nearby li{font-size:.82rem;color:var(--ink-soft);}
+  .nearby li strong{color:var(--ink);}
+  .nearby a{color:var(--gc);font-weight:600;text-decoration:none;white-space:nowrap;}
+  .nearby a:hover{text-decoration:underline;}
+
+  /* ---------- Map markers ---------- */
+  .pin{width:26px;height:26px;border-radius:50%;background:var(--gc);border:2px solid var(--bg);color:var(--bg);font:700 12px/22px 'Bricolage Grotesque',sans-serif;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.5);transition:transform .18s,opacity .18s;}
+  .pin.start{width:20px;height:20px;margin:3px;line-height:16px;font-size:10px;}
+  .map-dim .pin:not(.active){opacity:.4;}
+  .pin.dimmed{opacity:.12 !important;}
+  .pin.active{transform:scale(1.3);box-shadow:0 0 0 6px color-mix(in srgb,var(--gc) 35%,transparent);}
+  .leaflet-container{font-family:'Work Sans',sans-serif;background:#182A33;}
+  .leaflet-tile-pane{filter:invert(1) hue-rotate(185deg) brightness(.92) contrast(.85) saturate(.55);}
+  .leaflet-control-attribution{background:rgba(18,24,28,.8) !important;color:var(--ink-soft) !important;}
+  .leaflet-control-attribution a{color:var(--ink-soft) !important;}
+
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}.pin{transition:none;}}
+
+  @media (max-width:900px){
+    .hero{padding:1.8rem 1rem 1.2rem;}
+    .layout{grid-template-columns:minmax(0,1fr);padding:0 1rem 3rem;gap:1.2rem;}
+    .layout > *{min-width:0;}
+    .map-panel{position:sticky;top:0;z-index:500;padding:.5rem .5rem 0;border-radius:0 0 var(--radius) var(--radius);}
+    #map{height:34vh;}
+    .map-hint{display:none;}
+    .tabs{flex-wrap:nowrap;overflow-x:auto;padding:.6rem 0;scrollbar-width:none;}
+    .tab{flex-shrink:0;}
+    .card{padding:.85rem .9rem;gap:0 .7rem;scroll-margin-top:calc(34vh + 5rem);}
   }
 
-  .map-panel{
-    position:sticky;
-    top:1.2rem;
-    background:var(--card-bg);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:1rem 1rem .4rem;
-  }
-  .map-panel svg{ width:100%; height:auto; display:block; }
-
-  .map-hint{
-    font-size:.85rem;
-    color:var(--ink-soft);
-    margin:.7rem 0 .9rem;
-    min-height:1.2em;
-    transition:opacity .2s ease;
-  }
-  .map-panel.has-active .map-hint{ opacity:0; }
-
-  .legend{
-    display:flex;
-    flex-wrap:wrap;
-    gap:.9rem;
-    padding:.7rem 0 1rem;
-    border-top:1px solid var(--line);
-    margin-top:.2rem;
-  }
-  .legend-item{
-    display:flex;
-    align-items:center;
-    gap:.4rem;
-    font-size:.78rem;
-    color:var(--ink-soft);
-  }
-  .legend-dot{
-    width:9px; height:9px; border-radius:50%;
-    display:inline-block;
-    flex-shrink:0;
-  }
-
-  .tabs{
-    display:flex;
-    flex-wrap:wrap;
-    gap:.5rem;
-    padding:0 0 .8rem;
-    border-top:1px solid var(--line);
-    margin-top:.2rem;
-    padding-top:.9rem;
-  }
-  .tab{
-    border:1px solid var(--line);
-    background:transparent;
-    color:var(--ink-soft);
-    font-size:.8rem;
-    font-weight:500;
-    padding:.4rem .85rem;
-    border-radius:999px;
-    cursor:pointer;
-    font-family:'Work Sans', sans-serif;
-    transition:border-color .15s ease, color .15s ease, background-color .15s ease;
-  }
-  .tab .dot{
-    display:inline-block;
-    width:7px;height:7px;border-radius:50%;
-    margin-right:.4rem;
-  }
-  .tab:hover{ border-color:var(--ink-soft); color:var(--ink); }
-  .tab.active{
-    background:var(--ink);
-    color:var(--bg);
-    border-color:var(--ink);
-  }
-
-  .route{ transition:opacity .2s ease; }
-  .route.dimmed{ opacity:.12; }
-  .card.hidden{ display:none; }
-
-  /* ---------- List / groups ---------- */
-  .group{
-    margin-bottom:2.2rem;
-  }
-  .group-head{
-    display:flex;
-    align-items:baseline;
-    gap:.6rem;
-    margin-bottom:.3rem;
-    border-bottom:2px solid var(--group-color, var(--sea));
-    padding-bottom:.5rem;
-  }
-  .group-head h2{
-    font-size:1.28rem;
-    font-weight:600;
-    margin:0;
-    color:var(--group-color, var(--sea));
-  }
-  .group-road{
-    font-size:.82rem;
-    color:var(--ink-soft);
-  }
-  .group-note{
-    font-size:.92rem;
-    color:var(--ink-soft);
-    margin:.6rem 0 1rem;
-    max-width:62ch;
-  }
-
-  .cards{
-    display:flex;
-    flex-direction:column;
-    gap:.65rem;
-  }
-
-  .card{
-    text-align:left;
-    background:var(--card-bg);
-    border:1px solid var(--line);
-    border-left:4px solid transparent;
-    border-radius:var(--radius);
-    padding:.95rem 1.1rem;
-    cursor:pointer;
-    display:grid;
-    grid-template-columns:auto 1fr;
-    gap:0 .9rem;
-    font-family:inherit;
-    color:inherit;
-    transition:border-color .15s ease, background-color .15s ease, box-shadow .15s ease;
-  }
-  .card:hover{
-    box-shadow:0 0 0 1px var(--group-color, var(--sea)) inset, 0 4px 18px rgba(0,0,0,.35);
-  }
-  .card:focus-visible{
-    outline:2px solid var(--amber);
-    outline-offset:2px;
-  }
-  .card.active{
-    border-left-color:var(--group-color, var(--sea));
-    background:var(--group-tint, var(--sea-tint));
-  }
-
-  .num{
-    grid-row:1 / 3;
-    align-self:start;
-    width:2rem;height:2rem;
-    border-radius:50%;
-    border:1.5px solid var(--group-color, var(--sea));
-    color:var(--group-color, var(--sea));
-    display:flex;align-items:center;justify-content:center;
-    font-size:1rem;
-    font-weight:600;
-    background:var(--panel-2);
-  }
-  .card.active .num{
-    background:var(--group-color, var(--sea));
-    color:var(--bg);
-  }
-
-  .card-title{
-    font-family:'Bricolage Grotesque', sans-serif;
-    font-size:1.06rem;
-    font-weight:600;
-    margin:0 0 .2rem;
-    color:var(--ink);
-  }
-
-  .chips{
-    display:flex; gap:.4rem; flex-wrap:wrap;
-    margin-bottom:.35rem;
-  }
-  .chip{
-    font-size:.74rem;
-    color:var(--ink-soft);
-    border:1px solid var(--line);
-    border-radius:999px;
-    padding:.12rem .55rem;
-    background:var(--panel-2);
-  }
-
-  .card-desc{
-    font-size:.9rem;
-    color:var(--ink-soft);
-    margin:0;
-    max-width:60ch;
-  }
-  .card-desc a{
-    color:var(--amber);
-    text-decoration:underline;
-    text-underline-offset:2px;
-  }
-  .card-desc a:hover{ color:var(--ink); }
-
-  .map-link{
-    display:inline-flex;
-    align-items:center;
-    gap:.3rem;
-    margin-top:.5rem;
-    margin-right:1rem;
-    font-size:.82rem;
-    font-weight:600;
-    color:var(--group-color, var(--sea));
-    text-decoration:none;
-  }
-  .map-link:hover{ text-decoration:underline; }
-  .food-link{ opacity:.8; }
-
-  .nearby{
-    margin-top:.8rem;
-    padding-top:.7rem;
-    border-top:1px dashed var(--line);
-  }
-  .nearby-title{
-    font-size:.78rem;
-    font-weight:600;
-    color:var(--ink-soft);
-    margin:0 0 .4rem;
-  }
-  .nearby ul{
-    margin:0;
-    padding-left:1.1rem;
-    display:flex;
-    flex-direction:column;
-    gap:.3rem;
-  }
-  .nearby li{
-    font-size:.82rem;
-    color:var(--ink-soft);
-  }
-  .nearby li strong{ color:var(--ink); }
-  .nearby a{
-    color:var(--group-color, var(--sea));
-    font-weight:600;
-    text-decoration:none;
-  }
-  .nearby a:hover{ text-decoration:underline; }
-
-  /* ---------- SVG map markers ---------- */
-  .map-svg a{ cursor:pointer; }
-  .marker circle.dot{ transition:r .18s ease, opacity .18s ease; }
-  .marker circle.halo{
-    opacity:0;
-  }
-  .marker text{
-    font-family:'Bricolage Grotesque', sans-serif;
-    font-size:11px;
-    font-weight:700;
-    fill:var(--bg);
-    text-anchor:middle;
-    dominant-baseline:central;
-    pointer-events:none;
-  }
-  .map-svg.has-active .marker:not(.active) circle.dot{ opacity:.35; }
-  .map-svg.has-active .marker:not(.active) text{ opacity:.5; }
-  .marker.dimmed{ opacity:.15; }
-  .marker.active circle.dot{ r:13; }
-  .marker.active circle.halo{
-    opacity:1;
-    animation:pulse 1.6s ease-in-out infinite;
-  }
-
-  @keyframes pulse{
-    0%,100%{ r:11px; opacity:.55; }
-    50%{ r:17px; opacity:.15; }
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    .marker.active circle.halo{ animation:none; opacity:.5; }
-    html{ scroll-behavior:auto; }
-  }
-
-  /* ---------- Responsive ---------- */
-  @media (max-width: 900px){
-    .layout{
-      grid-template-columns:1fr;
-    }
-    .map-panel{
-      position:sticky;
-      top:0;
-      z-index:5;
-    }
-  }
-
-  footer{
-    max-width:1320px;
-    margin:0 auto;
-    padding:0 1.5rem 3rem;
-    color:var(--ink-soft);
-    font-size:.82rem;
-  }
+  footer{max-width:1320px;margin:0 auto;padding:0 1.5rem 3rem;color:var(--ink-soft);font-size:.82rem;}
+  footer p{margin:.2rem 0;max-width:80ch;}
 </style>
 </head>
 <body>
 
 <div class="hero">
-  <h1>Abruzzo nuo Pescara</h1>
-  <p>Aštuoni objektai, sugrupuoti į penkias kryptis. Pasirinkite objektą sąraše — jis bus pažymėtas žemėlapyje.</p>
-  <p class="version-switch"><a href="variantas2.html">Kitas dizainas (labiau pritaikytas telefonui) →</a></p>
+  <h1>Abruzzo nuo Pescaros</h1>
+  <p>Aštuonios vietos, sugrupuotos į penkias kryptis. Paspauskite vietą sąraše, ir ji bus pažymėta žemėlapyje, arba paspauskite skaičių žemėlapyje, ir atsidarys jos aprašymas.</p>
+  
 </div>
 
 <div class="layout">
-
-  <!-- MAP -->
-  <div class="map-panel" id="mapPanel">
-    <svg class="map-svg" id="mapSvg" viewBox="0 0 620 760" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Abruzzo žemėlapis su pažymėtais objektais">
-      <defs>
-        <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="26"/>
-        </filter>
-      </defs>
-
-      <!-- land -->
-      <rect x="0" y="0" width="620" height="760" fill="var(--bg)"/>
-
-      <!-- mountain texture -->
-      <g fill="none" stroke="#26333A" stroke-width="1">
-        <ellipse cx="280" cy="205" rx="250" ry="215" transform="rotate(-10 280 205)"/>
-        <ellipse cx="280" cy="205" rx="190" ry="165" transform="rotate(-10 280 205)"/>
-        <ellipse cx="280" cy="205" rx="125" ry="108" transform="rotate(-10 280 205)"/>
-        <ellipse cx="330" cy="560" rx="225" ry="225" transform="rotate(5 330 560)"/>
-        <ellipse cx="330" cy="560" rx="160" ry="160" transform="rotate(5 330 560)"/>
-      </g>
-
-      <!-- sea -->
-      <polygon points="409,0 440,120 468,200 503,280 543,376 573,720 620,760 620,0" fill="#182A33"/>
-      <polyline points="409,0 440,120 468,200 503,280 543,376 573,720" fill="none" stroke="var(--sea)" stroke-width="1.4" opacity=".5"/>
-
-      <!-- routes -->
-      <g fill="none" stroke-width="2.4" stroke-dasharray="1 7" stroke-linecap="round" opacity=".85">
-        <path class="route" data-group="coast" d="M448,151 L492,238 L503,275 L563,436" stroke="var(--sea)"/>
-        <path class="route" data-group="mountain" d="M448,151 L294,166 L257,239" stroke="var(--olive)"/>
-        <path class="route" data-group="deep" d="M448,151 L366,583" stroke="var(--clay)"/>
-        <path class="route" data-group="roma" d="M448,151 L43,603" stroke="var(--roma)"/>
-        <path class="route" data-group="cave" d="M448,151 L434,491" stroke="var(--cave)"/>
-      </g>
-
-      <!-- Pescara -->
-      <a href="https://www.google.com/maps/search/restaurants/@42.4618,14.2160,14z" target="_blank" rel="noopener" aria-label="Kur pavalgyti Pescaroje">
-      <g class="marker" data-id="0" data-group="start" transform="translate(448,151)">
-        <circle class="halo" r="13" fill="var(--amber)"/>
-        <circle class="dot" r="8" fill="var(--amber)" stroke="var(--bg)" stroke-width="2"/>
-      </g>
-      </a>
-      <text x="448" y="132" text-anchor="middle" font-family="Bricolage Grotesque" font-size="12" font-weight="700" fill="var(--amber)" pointer-events="none">PESCARA</text>
-
-      <!-- markers -->
-      <a href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.3521,14.4027&travelmode=driving" target="_blank" rel="noopener">
-      <g class="marker" data-id="1" data-group="coast" transform="translate(492,238)">
-        <circle class="halo" r="13" fill="var(--sea)"/>
-        <circle class="dot" r="11" fill="var(--sea)" stroke="var(--bg)" stroke-width="2"/>
-        <text y="1">1</text>
-      </g>
-      </a>
-
-      <a href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.3057,14.4510&travelmode=driving" target="_blank" rel="noopener">
-      <g class="marker" data-id="2" data-group="coast" transform="translate(503,275)">
-        <circle class="halo" r="13" fill="var(--sea)"/>
-        <circle class="dot" r="11" fill="var(--sea)" stroke="var(--bg)" stroke-width="2"/>
-        <text y="1">2</text>
-      </g>
-      </a>
-
-      <a href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.1046,14.7059&travelmode=driving" target="_blank" rel="noopener">
-      <g class="marker" data-id="3" data-group="coast" transform="translate(563,436)">
-        <circle class="halo" r="13" fill="var(--sea)"/>
-        <circle class="dot" r="11" fill="var(--sea)" stroke="var(--bg)" stroke-width="2"/>
-        <text y="1">3</text>
-      </g>
-      </a>
-
-      <a href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.3507,13.3999&travelmode=driving" target="_blank" rel="noopener">
-      <g class="marker" data-id="4" data-group="mountain" transform="translate(257,239)">
-        <circle class="halo" r="13" fill="var(--olive)"/>
-        <circle class="dot" r="11" fill="var(--olive)" stroke="var(--bg)" stroke-width="2"/>
-        <text y="1">4</text>
-      </g>
-      </a>
-
-      <a href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.4428,13.5577&travelmode=driving" target="_blank" rel="noopener">
-      <g class="marker" data-id="5" data-group="mountain" transform="translate(294,166)">
-        <circle class="halo" r="13" fill="var(--olive)"/>
-        <circle class="dot" r="11" fill="var(--olive)" stroke="var(--bg)" stroke-width="2"/>
-        <text y="1">5</text>
-      </g>
-      </a>
-
-      <a href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=41.9217,13.8637&travelmode=driving" target="_blank" rel="noopener">
-      <g class="marker" data-id="6" data-group="deep" transform="translate(366,583)">
-        <circle class="halo" r="13" fill="var(--clay)"/>
-        <circle class="dot" r="11" fill="var(--clay)" stroke="var(--bg)" stroke-width="2"/>
-        <text y="1">6</text>
-      </g>
-      </a>
-
-      <a href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=41.8967,12.4822&travelmode=driving" target="_blank" rel="noopener">
-      <g class="marker" data-id="7" data-group="roma" transform="translate(43,603)">
-        <circle class="halo" r="13" fill="var(--roma)"/>
-        <circle class="dot" r="11" fill="var(--roma)" stroke="var(--bg)" stroke-width="2"/>
-        <text y="1">7</text>
-      </g>
-      </a>
-
-      <a href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.0359,14.1565&travelmode=driving" target="_blank" rel="noopener">
-      <g class="marker" data-id="8" data-group="cave" transform="translate(434,491)">
-        <circle class="halo" r="13" fill="var(--cave)"/>
-        <circle class="dot" r="11" fill="var(--cave)" stroke="var(--bg)" stroke-width="2"/>
-        <text y="1">8</text>
-      </g>
-      </a>
-    </svg>
-
-
-    <p class="map-hint" id="mapHint">Pasirinkite objektą sąraše, kad jis būtų pažymėtas žemėlapyje.</p>
-
-    <div class="legend">
-      <span class="legend-item"><span class="legend-dot" style="background:var(--amber)"></span>Pescara (startas)</span>
-      <span class="legend-item"><span class="legend-dot" style="background:var(--sea)"></span>Pakrantė</span>
-      <span class="legend-item"><span class="legend-dot" style="background:var(--olive)"></span>Kalnai</span>
-      <span class="legend-item"><span class="legend-dot" style="background:var(--clay)"></span>Kalnų ežeras</span>
-      <span class="legend-item"><span class="legend-dot" style="background:var(--roma)"></span>Roma</span>
-      <span class="legend-item"><span class="legend-dot" style="background:var(--cave)"></span>Urvas</span>
-    </div>
-
+  <div class="map-panel">
+    <div id="map" role="region" aria-label="Žemėlapis su gido vietomis"></div>
+    <p class="map-hint">Paspauskite vietą sąraše arba skaičių žemėlapyje.</p>
     <div class="tabs" id="tabs">
       <button class="tab active" data-filter="all">Visi</button>
-      <button class="tab" data-filter="coast"><span class="dot" style="background:var(--sea)"></span>Pakrantė</button>
-      <button class="tab" data-filter="mountain"><span class="dot" style="background:var(--olive)"></span>Kalnai</button>
-      <button class="tab" data-filter="deep"><span class="dot" style="background:var(--clay)"></span>Kalnų ežeras</button>
-      <button class="tab" data-filter="roma"><span class="dot" style="background:var(--roma)"></span>Roma</button>
-      <button class="tab" data-filter="cave"><span class="dot" style="background:var(--cave)"></span>Urvas</button>
+      <button class="tab" data-filter="g1"><span class="dot" style="background:#5FA8C9"></span>Pakrantė</button>
+      <button class="tab" data-filter="g2"><span class="dot" style="background:#8FBE6B"></span>Kalnai</button>
+      <button class="tab" data-filter="g3"><span class="dot" style="background:#D98B4F"></span>Kalnų ežeras</button>
+      <button class="tab" data-filter="g4"><span class="dot" style="background:#D4AF6A"></span>Roma</button>
+      <button class="tab" data-filter="g5"><span class="dot" style="background:#B98CE0"></span>Urvas</button>
     </div>
   </div>
 
-  <!-- LIST -->
   <div class="list-panel">
-
-    <section class="group" style="--group-color:#E3A857; --group-tint:rgba(227,168,87,.16);">
-      <div class="group-head">
-        <h2>Starto taškas</h2>
-        <span class="group-road">visų maršrutų pradžia</span>
-      </div>
+    <section class="group" data-group="start" style="--gc:#E3A857;--gt:rgba(227,168,87,0.16)">
+      <div class="group-head"><span class="group-label">Starto taškas</span><h2>Pescara</h2></div>
       <div class="cards">
-
-        <button class="card" data-id="0" data-group="start">
+        <article class="card" data-id="0" data-group="start" tabindex="0">
           <span class="num">P</span>
-          <span>
+          <div>
             <p class="card-title">Pescara</p>
-            <span class="chips"><span class="chip">Starto taškas</span></span>
-            <p class="card-desc">Didžiausias Abruzzo regiono miestas ir šio gido pradžios taškas. Modernus pajūrio miestas su ilgu paplūdimiu, žinomas kaip poeto Gabriele D'Annunzio gimtinė.</p>
-            <a class="map-link" href="https://www.google.com/maps?q=42.4618,14.2160" target="_blank" rel="noopener">Žemėlapyje ↗</a>
-            <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.4618,14.2160,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
-            <div class="nearby">
-              <p class="nearby-title">Verta aplankyti netoliese:</p>
-              <ul>
-                <li><strong>Ponte del Mare</strong> — didžiausias dviračių/pėsčiųjų tiltas Italijoje, puikus vaizdas į jūrą. <a href="https://www.google.com/maps/search/?api=1&query=Ponte%20del%20Mare&query_place_id=ChIJ7WfMUV2mMRMRwMWFlo-PxFk" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-                <li><strong>Gabriele D'Annunzio gimtasis namas-muziejus</strong> — poeto gimtinė senamiestyje. <a href="https://www.google.com/maps/search/?api=1&query=Gabriele%20D%27Annunzio%20gimtasis%20namas-muziejus&query_place_id=ChIJ5-jtSWumMRMREzs0fcMmndM" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-                <li><strong>Museo delle Genti d'Abruzzo</strong> — regiono etnografijos ir istorijos muziejus. <a href="https://www.google.com/maps/search/?api=1&query=Museo%20delle%20Genti%20d%27Abruzzo&query_place_id=ChIJtXbZHWumMRMRlf_ow09Egvk" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-              </ul>
-            </div>
-          </span>
-        </button>
-
+            
+            <p class="card-desc">Didžiausias Abruzzo regiono miestas ir šio gido pradžios taškas. Modernus pajūrio miestas su ilgu paplūdimiu, žinomas kaip poeto Gabriele D&#x27;Annunzio gimtinė.</p>
+            
+            
+            <div class="links"><a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Pescara%2C%20Abruzzo%2C%20Italija" target="_blank" rel="noopener">Žemėlapyje ↗</a><a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.4618,14.216,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a></div>
+            <div class="nearby"><p class="nearby-title">Verta aplankyti netoliese:</p><ul><li><strong>Ponte del Mare</strong>. Didžiausias dviračių ir pėsčiųjų tiltas Italijoje, puikus vaizdas į jūrą <a href="https://www.google.com/maps/search/?api=1&amp;query=Ponte%20del%20Mare%2C%20Abruzzo%2C%20Italija&amp;query_place_id=ChIJ7WfMUV2mMRMRwMWFlo-PxFk" target="_blank" rel="noopener">žemėlapyje ↗</a></li><li><strong>Gabriele D&#x27;Annunzio gimtasis namas-muziejus</strong>. Poeto gimtinė senamiestyje <a href="https://www.google.com/maps/search/?api=1&amp;query=Gabriele%20D%27Annunzio%20gimtasis%20namas-muziejus%2C%20Abruzzo%2C%20Italija&amp;query_place_id=ChIJ5-jtSWumMRMREzs0fcMmndM" target="_blank" rel="noopener">žemėlapyje ↗</a></li><li><strong>Museo delle Genti d&#x27;Abruzzo</strong>. Regiono etnografijos ir istorijos muziejus <a href="https://www.google.com/maps/search/?api=1&amp;query=Museo%20delle%20Genti%20d%27Abruzzo%2C%20Abruzzo%2C%20Italija&amp;query_place_id=ChIJtXbZHWumMRMRlf_ow09Egvk" target="_blank" rel="noopener">žemėlapyje ↗</a></li></ul></div>
+          </div>
+        </article>
       </div>
     </section>
-
-    <section class="group" style="--group-color:#5FA8C9; --group-tint:rgba(95,168,201,.16);">
-      <div class="group-head">
-        <h2>1 kryptis — Pietų pakrantė</h2>
-        <span class="group-road">SS16, į pietus nuo Pescara</span>
-      </div>
-      <p class="group-note">Costa dei Trabocchi driekiasi apie 70&nbsp;km nuo Ortonos iki Vasto — pakeliui dešimtys medinių žvejybos konstrukcijų, dalis paverstos restoranais. Visi trys taškai tinka vienai dienai.</p>
+    <section class="group" data-group="g1" style="--gc:#5FA8C9;--gt:rgba(95,168,201,0.16)">
+      <div class="group-head"><span class="group-label">1 kryptis</span><h2>Pietų pakrantė</h2><span class="group-road">SS16 ir A14, į pietus nuo Pescaros</span></div>
+      <p class="group-note">Costa dei Trabocchi driekiasi apie 70 km nuo Ortonos iki Vasto. Pakeliui dešimtys medinių žvejybos konstrukcijų, dalis jų paverstos restoranais. Visi trys taškai tinka vienai dienai.</p>
       <div class="cards">
-
-        <button class="card" data-id="1" data-group="coast">
+        <article class="card" data-id="1" data-group="g1" tabindex="0">
           <span class="num">1</span>
-          <span>
+          <div>
             <p class="card-title">Ortona</p>
-            <span class="chips"><span class="chip">23 km</span><span class="chip">25 min</span></span>
-            <p class="card-desc">Senas pakrantės miestelis su istoriniu centru ir aukštai virš jūros esančia terasa. Pirmasis taškas, nuo kurio prasideda Costa dei Trabocchi važiuojant iš šiaurės; žinomas ir iš Antrojo pasaulinio karo istorijos (Ortonos mūšis).</p>
-            <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.3521,14.4027&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
-            <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.3521,14.4027,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
-            <div class="nearby">
-              <p class="nearby-title">Verta aplankyti netoliese:</p>
-              <ul>
-              <li><strong>Castello Aragonese</strong> — įspūdinga pilis ant uolos virš jūros, įėjimas nemokamas. <a href="https://www.google.com/maps/search/?api=1&query=Castello%20Aragonese&query_place_id=ChIJhxU2d2oEMRMR6OT3WoVXmgU" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-              <li><strong>Passeggiata Orientale</strong> — vaizdinga pakrantės promenada nuo pilies iki uosto. <a href="https://www.google.com/maps/search/?api=1&query=Passeggiata%20Orientale&query_place_id=ChIJS2WPtU4FMRMRHpjjrJ0XDpI" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-              <li><strong>Costa dei Trabocchi dviračių takas</strong> — buvusi geležinkelio linija, paversta pajūrio taku. <a href="https://www.google.com/maps/search/?api=1&query=Costa%20dei%20Trabocchi%20dvira%C4%8Di%C5%B3%20takas&query_place_id=ChIJWVgdJbgFMRMRk8-CQWkyWbo" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-              </ul>
-            </div>
-          </span>
-        </button>
-
-        <button class="card" data-id="2" data-group="coast">
+            <span class="chips"><span class="chip">28 km</span><span class="chip">30 min.</span></span>
+            <p class="card-desc">Senas pakrantės miestelis su istoriniu centru ir aukštai virš jūros esančia terasa. Nuo čia prasideda Costa dei Trabocchi, važiuojant iš šiaurės. Žinomas ir iš Antrojo pasaulinio karo istorijos (Ortonos mūšis).</p>
+            
+            
+            <div class="links"><a class="map-link" href="https://www.google.com/maps/dir/?api=1&amp;origin=42.4618,14.216&amp;destination=42.3521,14.4027&amp;travelmode=driving" target="_blank" rel="noopener">Kaip nuvykti ↗</a><a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.3521,14.4027,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a></div>
+            <div class="nearby"><p class="nearby-title">Verta aplankyti netoliese:</p><ul><li><strong>Castello Aragonese</strong>. Įspūdinga pilis ant uolos virš jūros, įėjimas nemokamas <a href="https://www.google.com/maps/search/?api=1&amp;query=Castello%20Aragonese%2C%20Ortona%2C%20Chieti%2C%20Italija&amp;query_place_id=ChIJhxU2d2oEMRMR6OT3WoVXmgU" target="_blank" rel="noopener">žemėlapyje ↗</a></li><li><strong>Passeggiata Orientale</strong>. Vaizdinga pakrantės promenada nuo pilies iki uosto <a href="https://www.google.com/maps/search/?api=1&amp;query=Passeggiata%20Orientale%2C%20Ortona%2C%20Chieti%2C%20Italija&amp;query_place_id=ChIJS2WPtU4FMRMRHpjjrJ0XDpI" target="_blank" rel="noopener">žemėlapyje ↗</a></li><li><strong>Costa dei Trabocchi dviračių takas</strong>. Buvusi geležinkelio linija, paversta pajūrio taku <a href="https://www.google.com/maps/search/?api=1&amp;query=Costa%20dei%20Trabocchi%20dvira%C4%8Di%C5%B3%20takas%2C%20Ortona%2C%20Chieti%2C%20Italija&amp;query_place_id=ChIJWVgdJbgFMRMRk8-CQWkyWbo" target="_blank" rel="noopener">žemėlapyje ↗</a></li></ul></div>
+          </div>
+        </article>
+        <article class="card" data-id="2" data-group="g1" tabindex="0">
           <span class="num">2</span>
-          <span>
+          <div>
             <p class="card-title">Trabocco Punta Fornace</p>
-            <span class="chips"><span class="chip">35 km</span><span class="chip">40 min</span></span>
-            <p class="card-desc">San Vito Chietino. Vienas gražiausių ir žinomiausių trabocchi — ant polių virš jūros stovinti medinė žvejybos konstrukcija, dabar veikianti kaip žuvies restoranas su vaizdu į atvirą jūrą.</p>
-            <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.3057,14.4510&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
-            <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.3057,14.4510,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
-            <div class="nearby">
-              <p class="nearby-title">Verta aplankyti netoliese:</p>
-              <ul>
-              <li><strong>Promontorio Dannunziano</strong> — apžvalgos aikštelė su vaizdu į Adrijos jūrą. <a href="https://www.google.com/maps/search/?api=1&query=Promontorio%20Dannunziano&query_place_id=ChIJWZZsdSkDMRMR5B9Cir-He5g" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-              <li><strong>Belvedere Marconi</strong> — panoraminė aikštelė su žiūronais turistams. <a href="https://www.google.com/maps/search/?api=1&query=Belvedere%20Marconi&query_place_id=ChIJ78CVyxkDMRMRFKjSB_ZqHeg" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-              <li><strong>San Vito Chietino paplūdimys</strong> — jaukus pajūris su priėjimu prie dviračių tako. <a href="https://www.google.com/maps/search/?api=1&query=San%20Vito%20Chietino%20papl%C5%ABdimys&query_place_id=ChIJmVc1pSsDMRMRlCbMlAvg0Fs" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-              </ul>
-            </div>
-          </span>
-        </button>
-
-        <button class="card" data-id="3" data-group="coast">
+            <span class="chips"><span class="chip">35 km</span><span class="chip">35 min.</span></span>
+            <p class="card-desc">San Vito Chietino. Vienas gražiausių ir žinomiausių trabocchi: ant polių virš jūros stovinti medinė žvejybos konstrukcija, dabar veikianti kaip žuvies restoranas su vaizdu į atvirą jūrą.</p>
+            
+            
+            <div class="links"><a class="map-link" href="https://www.google.com/maps/dir/?api=1&amp;origin=42.4618,14.216&amp;destination=42.30569,14.45104&amp;travelmode=driving" target="_blank" rel="noopener">Kaip nuvykti ↗</a><a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.30569,14.45104,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a></div>
+            <div class="nearby"><p class="nearby-title">Verta aplankyti netoliese:</p><ul><li><strong>Promontorio Dannunziano</strong>. Apžvalgos aikštelė su vaizdu į Adrijos jūrą <a href="https://www.google.com/maps/search/?api=1&amp;query=Promontorio%20Dannunziano%2C%20San%20Vito%20Chietino%2C%20Chieti%2C%20Italija&amp;query_place_id=ChIJWZZsdSkDMRMR5B9Cir-He5g" target="_blank" rel="noopener">žemėlapyje ↗</a></li><li><strong>Belvedere Marconi</strong>. Panoraminė aikštelė su žiūronais turistams <a href="https://www.google.com/maps/search/?api=1&amp;query=Belvedere%20Marconi%2C%20San%20Vito%20Chietino%2C%20Chieti%2C%20Italija&amp;query_place_id=ChIJ78CVyxkDMRMRFKjSB_ZqHeg" target="_blank" rel="noopener">žemėlapyje ↗</a></li><li><strong>San Vito Chietino paplūdimys</strong>. Jaukus pajūris su priėjimu prie dviračių tako <a href="https://www.google.com/maps/search/?api=1&amp;query=San%20Vito%20Chietino%20papl%C5%ABdimys%2C%20San%20Vito%20Chietino%2C%20Chieti%2C%20Italija&amp;query_place_id=ChIJmVc1pSsDMRMRlCbMlAvg0Fs" target="_blank" rel="noopener">žemėlapyje ↗</a></li></ul></div>
+          </div>
+        </article>
+        <article class="card" data-id="3" data-group="g1" tabindex="0">
           <span class="num">3</span>
-          <span>
+          <div>
             <p class="card-title">Vasto</p>
-            <span class="chips"><span class="chip">66 km</span><span class="chip">55 min – 1 val.</span></span>
-            <p class="card-desc">Ant kalvos įsikūręs viduramžių miestelis su istoriniu centru ir Palazzo d'Avalos rūmais. Netoliese — Vasto Marina ir Punta Penna paplūdimiai; pietinis Costa dei Trabocchi taškas.</p>
-            <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.1046,14.7059&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
-            <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.1046,14.7059,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
-            <div class="nearby">
-              <p class="nearby-title">Verta aplankyti netoliese:</p>
-              <ul>
-              <li><strong>Castello Caldoresco</strong> — viduramžių pilies liekanos senamiestyje. <a href="https://www.google.com/maps/search/?api=1&query=Castello%20Caldoresco&query_place_id=ChIJYTs5gFTcMBMRj49-TxXhyeQ" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-              <li><strong>Palazzo d'Avalos</strong> — rūmai su muziejumi ir gražiu sodu. <a href="https://www.google.com/maps/search/?api=1&query=Palazzo%20d%27Avalos&query_place_id=ChIJmQD2BVTcMBMROlrHRGHKzbA" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-              <li><strong>Pontile di Vasto Marina</strong> — įsimylėjėlių molas su vaizdu į pakrantę. <a href="https://www.google.com/maps/search/?api=1&query=Pontile%20di%20Vasto%20Marina&query_place_id=ChIJdxP3NzjdMBMRxroOPUCBmiA" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-              </ul>
-            </div>
-          </span>
-        </button>
-
+            <span class="chips"><span class="chip">75 km</span><span class="chip">55 min.</span></span>
+            <p class="card-desc">Ant kalvos įsikūręs viduramžių miestelis su istoriniu centru ir Palazzo d&#x27;Avalos rūmais. Netoliese Vasto Marina ir Punta Penna paplūdimiai. Tai pietinis Costa dei Trabocchi taškas.</p>
+            
+            
+            <div class="links"><a class="map-link" href="https://www.google.com/maps/dir/?api=1&amp;origin=42.4618,14.216&amp;destination=42.1046,14.7059&amp;travelmode=driving" target="_blank" rel="noopener">Kaip nuvykti ↗</a><a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.1046,14.7059,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a></div>
+            <div class="nearby"><p class="nearby-title">Verta aplankyti netoliese:</p><ul><li><strong>Castello Caldoresco</strong>. Viduramžių pilies liekanos senamiestyje <a href="https://www.google.com/maps/search/?api=1&amp;query=Castello%20Caldoresco%2C%20Vasto%2C%20Chieti%2C%20Italija&amp;query_place_id=ChIJYTs5gFTcMBMRj49-TxXhyeQ" target="_blank" rel="noopener">žemėlapyje ↗</a></li><li><strong>Palazzo d&#x27;Avalos</strong>. Rūmai su muziejumi ir gražiu sodu <a href="https://www.google.com/maps/search/?api=1&amp;query=Palazzo%20d%27Avalos%2C%20Vasto%2C%20Chieti%2C%20Italija&amp;query_place_id=ChIJmQD2BVTcMBMROlrHRGHKzbA" target="_blank" rel="noopener">žemėlapyje ↗</a></li><li><strong>Pontile di Vasto Marina</strong>. Įsimylėjėlių molas su vaizdu į pakrantę <a href="https://www.google.com/maps/search/?api=1&amp;query=Pontile%20di%20Vasto%20Marina%2C%20Vasto%2C%20Chieti%2C%20Italija&amp;query_place_id=ChIJdxP3NzjdMBMRxroOPUCBmiA" target="_blank" rel="noopener">žemėlapyje ↗</a></li></ul></div>
+          </div>
+        </article>
       </div>
     </section>
-
-    <section class="group" style="--group-color:#8FBE6B; --group-tint:rgba(143,190,107,.16);">
-      <div class="group-head">
-        <h2>2 kryptis — Vakarų kalnai</h2>
-        <span class="group-road">A25 greitkeliu, į vakarus</span>
-      </div>
-      <p class="group-note">L'Aquila ir Gran Sasso funikulierius yra tame pačiame koridoriuje, atstumas tarp jų nedidelis (~25&nbsp;km) — patogu vienai dienai.</p>
+    <section class="group" data-group="g2" style="--gc:#8FBE6B;--gt:rgba(143,190,107,0.16)">
+      <div class="group-head"><span class="group-label">2 kryptis</span><h2>Vakarų kalnai</h2><span class="group-road">A25 arba A14 ir A24, į vakarus</span></div>
+      <p class="group-note">L&#x27;Aquila ir Gran Sasso keltuvas yra tame pačiame koridoriuje, tarp jų apie 19 km A24 greitkeliu (apie 20 min.), todėl patogu aplankyti per vieną dieną.</p>
       <div class="cards">
-
-        <button class="card" data-id="4" data-group="mountain">
+        <article class="card" data-id="4" data-group="g2" tabindex="0">
           <span class="num">4</span>
-          <span>
-            <p class="card-title">L'Aquila</p>
-            <span class="chips"><span class="chip">68 km</span><span class="chip">1 val.</span></span>
-            <p class="card-desc">Abruzzo regiono sostinė. Istorinis centras iš dalies atstatytas po 2009 m. žemės drebėjimo; verta pamatyti Baziliką di Collemaggio ir Ispanų tvirtovę (Forte Spagnolo).</p>
-            <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.3507,13.3999&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
-            <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.3507,13.3999,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
-            <div class="nearby">
-              <p class="nearby-title">Verta aplankyti netoliese:</p>
-              <ul>
-              <li><strong>Fontana delle 99 Cannelle</strong> — simbolinis 99 čiurkšlių fontanas senamiestyje. <a href="https://www.google.com/maps/search/?api=1&query=Fontana%20delle%2099%20Cannelle&query_place_id=ChIJZbPYOvbSLxMRufbbyo4m2gc" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-              <li><strong>Fontana Luminosa</strong> — žinomas fontanas miesto centre. <a href="https://www.google.com/maps/search/?api=1&query=Fontana%20Luminosa&query_place_id=ChIJMXY6PADTLxMRjonPZeD6H1o" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-              <li><strong>MUNDA</strong> — Nacionalinis Abruzzo muziejus su meno ir archeologijos kolekcija. <a href="https://www.google.com/maps/search/?api=1&query=MUNDA&query_place_id=ChIJYYR9a_bSLxMRL0nZGsJeL7M" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-              </ul>
-            </div>
-          </span>
-        </button>
-
-        <button class="card" data-id="5" data-group="mountain">
+          <div>
+            <p class="card-title">L&#x27;Aquila</p>
+            <span class="chips"><span class="chip">108 km</span><span class="chip">1 val. 25 min.</span></span>
+            <p class="card-desc">Abruzzo regiono sostinė. Istorinis centras iš dalies atstatytas po 2009 m. žemės drebėjimo. Verta pamatyti Collemaggio baziliką ir Ispanų tvirtovę (Forte Spagnolo).</p>
+            
+            
+            <div class="links"><a class="map-link" href="https://www.google.com/maps/dir/?api=1&amp;origin=42.4618,14.216&amp;destination=42.3507,13.3999&amp;travelmode=driving" target="_blank" rel="noopener">Kaip nuvykti ↗</a><a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.3507,13.3999,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a></div>
+            <div class="nearby"><p class="nearby-title">Verta aplankyti netoliese:</p><ul><li><strong>Fontana delle 99 Cannelle</strong>. Simbolinis 99 čiurkšlių fontanas senamiestyje <a href="https://www.google.com/maps/search/?api=1&amp;query=Fontana%20delle%2099%20Cannelle%2C%20L%27Aquila%2C%20Italija&amp;query_place_id=ChIJZbPYOvbSLxMRufbbyo4m2gc" target="_blank" rel="noopener">žemėlapyje ↗</a></li><li><strong>Fontana Luminosa</strong>. Žinomas fontanas miesto centre <a href="https://www.google.com/maps/search/?api=1&amp;query=Fontana%20Luminosa%2C%20L%27Aquila%2C%20Italija&amp;query_place_id=ChIJMXY6PADTLxMRjonPZeD6H1o" target="_blank" rel="noopener">žemėlapyje ↗</a></li><li><strong>MUNDA</strong>. Nacionalinis Abruzzo muziejus su meno ir archeologijos kolekcija <a href="https://www.google.com/maps/search/?api=1&amp;query=MUNDA%2C%20L%27Aquila%2C%20Italija&amp;query_place_id=ChIJYYR9a_bSLxMRL0nZGsJeL7M" target="_blank" rel="noopener">žemėlapyje ↗</a></li></ul></div>
+          </div>
+        </article>
+        <article class="card" data-id="5" data-group="g2" tabindex="0">
           <span class="num">5</span>
-          <span>
+          <div>
             <p class="card-title">Funivia Campo Imperatore</p>
-            <span class="chips"><span class="chip">90 km</span><span class="chip">1 val. 15 min</span></span>
-            <p class="card-desc">Funikulierius nuo Assergi kelia į Campo Imperatore plokščiakalnę (~2100 m), vadinamą „mažuoju Tibetu“. Gran Sasso e Monti della Laga parke — žygiai pėsčiomis ir vaizdai į Corno Grande viršūnę. Čia veikia garsiausias regiono keltuvas „Funivia del Gran Sasso d'Italia“ — didelės gondolos kelia iš Fonte Cerreto slėnio tiesiai į plokščiakalnę ir yra pagrindinis keltuvas keliautojams bei slidininkams (<a href="https://www.ilgransasso.it/la-stazione/" target="_blank" rel="noopener">šaltinis</a>, <a href="https://www.laquilablog.it/funivia-del-gran-sasso-dal-1-agosto-prima-corsa-anticipata-alle-8/" target="_blank" rel="noopener">šaltinis</a>).</p>
-            <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.4428,13.5577&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
-            <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.4428,13.5577,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
-            <div class="nearby">
-              <p class="nearby-title">Verta aplankyti netoliese:</p>
-              <ul>
-              <li><strong>Corno Grande</strong> — aukščiausia Apeninų viršūnė, populiarus žygių tikslas. <a href="https://www.google.com/maps/search/?api=1&query=Corno%20Grande&query_place_id=ChIJNxBQnb7RMRMRzDMveOWGs-s" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-              <li><strong>Fonte Cerreto</strong> — keltuvo apatinė stotis su restoranais ir parkavimu. <a href="https://www.google.com/maps/search/?api=1&query=Fonte%20Cerreto&query_place_id=ChIJz0K2OFYqLhMR781yXNJw3qg" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-              </ul>
-            </div>
-          </span>
-        </button>
-
+            <span class="chips"><span class="chip">107 km</span><span class="chip">1 val. 15 min.</span><span class="chip">iki apatinės stoties</span></span>
+            <p class="card-desc">Keltuvas „Funivia del Gran Sasso d&#x27;Italia“ iš Fonte Cerreto slėnio didelėmis gondolomis kelia tiesiai į Campo Imperatore plokščiakalnę (apie 2 100 m), vadinamą „mažuoju Tibetu“. Tai pagrindinis regiono keltuvas keliautojams ir slidininkams. Viršuje, Gran Sasso e Monti della Laga parke, žygiai pėsčiomis ir vaizdai į Corno Grande viršūnę.</p>
+            <p class="warn">Nuoroda „Kaip nuvykti“ veda į apatinę stotį Fonte Cerreto, kur paliekamas automobilis. Viršutinė stotis ant plokščiakalnės automobiliu pasiekiama tik ilgu kalnų keliu.</p>
+            <p class="sources">Šaltiniai: <a href="https://www.ilgransasso.it/la-stazione/" target="_blank" rel="noopener">ilgransasso.it</a>, <a href="https://www.laquilablog.it/funivia-del-gran-sasso-dal-1-agosto-prima-corsa-anticipata-alle-8/" target="_blank" rel="noopener">laquilablog.it</a></p>
+            <div class="links"><a class="map-link" href="https://www.google.com/maps/dir/?api=1&amp;origin=42.4618,14.216&amp;destination=42.42583,13.52852&amp;travelmode=driving" target="_blank" rel="noopener">Kaip nuvykti ↗</a><a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.42583,13.52852,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a></div>
+            <div class="nearby"><p class="nearby-title">Verta aplankyti netoliese:</p><ul><li><strong>Corno Grande</strong>. Aukščiausia Apeninų viršūnė, populiarus žygių tikslas <a href="https://www.google.com/maps/search/?api=1&amp;query=Corno%20Grande%2C%20Fonte%20Cerreto%2C%20Assergi%2C%20Italija&amp;query_place_id=ChIJNxBQnb7RMRMRzDMveOWGs-s" target="_blank" rel="noopener">žemėlapyje ↗</a></li><li><strong>Fonte Cerreto</strong>. Keltuvo apatinė stotis su restoranais ir automobilių stovėjimo aikštele <a href="https://www.google.com/maps/search/?api=1&amp;query=Fonte%20Cerreto%2C%20Fonte%20Cerreto%2C%20Assergi%2C%20Italija&amp;query_place_id=ChIJz0K2OFYqLhMR781yXNJw3qg" target="_blank" rel="noopener">žemėlapyje ↗</a></li></ul></div>
+          </div>
+        </article>
       </div>
     </section>
-
-    <section class="group" style="--group-color:#D98B4F; --group-tint:rgba(217,139,79,.16);">
-      <div class="group-head">
-        <h2>3 kryptis — Giliai kalnuose</h2>
-        <span class="group-road">per Sulmoną, SS17/SS83</span>
-      </div>
-      <p class="group-note">Labiausiai nutolęs ir sunkiausiai pasiekiamas objektas — kalnuotas, siauras kelias. Rekomenduojama skirti atskirą dieną.</p>
+    <section class="group" data-group="g3" style="--gc:#D98B4F;--gt:rgba(217,139,79,0.16)">
+      <div class="group-head"><span class="group-label">3 kryptis</span><h2>Giliai kalnuose</h2><span class="group-road">A25 iki Sulmonos, toliau SR479</span></div>
+      <p class="group-note">Paskutinė kelio dalis nuo Sulmonos kalnuota ir siaura, per Sagittario tarpeklį. Rekomenduojama skirti atskirą dieną.</p>
       <div class="cards">
-
-        <button class="card" data-id="6" data-group="deep">
+        <article class="card" data-id="6" data-group="g3" tabindex="0">
           <span class="num">6</span>
-          <span>
+          <div>
             <p class="card-title">Lago di Scanno</p>
-            <span class="chips"><span class="chip">110 km</span><span class="chip">1 val. 50 min</span></span>
-            <p class="card-desc">Didžiausias natūralus ežeras Abruzzo regione, susiformavęs po nuošliaužos, užtvenkusios Tasso upę. Vietinių legendų siejamas su širdies forma. Aplink ežerą — pėsčiųjų takai ir du paplūdimiai maudytis vasarą. Pačiame Scanno miestelyje veikia kėdučių keltuvas „Seggiovia Colle Rotondo“, keliantis į ~1600 m aukščio viršukalnę su gražiais kalnų vaizdais — tačiau pastaraisiais metais jis dažnai dirba su pertraukomis arba būna uždarytas, tad prieš kelionę verta pasitikrinti vietinę informaciją (<a href="https://www.tripadvisor.com/Attraction_Review-g194910-d6997834-Reviews-Seggiovia_Monte_Rotondo-Scanno_Province_of_L_Aquila_Abruzzo.html" target="_blank" rel="noopener">šaltinis</a>, <a href="https://www.visitscanno.com/poi-scanno/seggiovia-scanno/" target="_blank" rel="noopener">šaltinis</a>).</p>
-            <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=41.9217,13.8637&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
-            <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@41.9217,13.8637,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
-            <div class="nearby">
-              <p class="nearby-title">Verta aplankyti netoliese:</p>
-              <ul>
-              <li><strong>Chiesa di Santa Maria dell'Annunziata</strong> — nedidelė bažnytėlė ant ežero kranto. <a href="https://www.google.com/maps/search/?api=1&query=Chiesa%20di%20Santa%20Maria%20dell%27Annunziata&query_place_id=ChIJe4ZE8QoTMBMR3qfyHtcP9N0" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-              <li><strong>Vista Panoramica del Cuore</strong> — apžvalgos taškas su geriausiu vaizdu į širdies formos ežerą. <a href="https://www.google.com/maps/search/?api=1&query=Vista%20Panoramica%20del%20Cuore&query_place_id=ChIJx2lnx_ETMBMRzQ8M2qzffYU" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-              <li><strong>Frattura Vecchia</strong> — apleistas kaimelis, sugriautas 1915 m. žemės drebėjimo. <a href="https://www.google.com/maps/search/?api=1&query=Frattura%20Vecchia&query_place_id=ChIJ8Uko8IATMBMRy4FGs4DCHxI" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-              </ul>
-            </div>
-          </span>
-        </button>
-
+            <span class="chips"><span class="chip">93 km</span><span class="chip">1 val. 10 min.</span></span>
+            <p class="card-desc">Didžiausias natūralus ežeras Abruzzo regione, susiformavęs po nuošliaužos, užtvenkusios Tasso upę. Vietinės legendos jį sieja su širdies forma. Aplink ežerą pėsčiųjų takai ir du paplūdimiai maudytis vasarą.</p>
+            <p class="warn">Scanno miestelyje veikia kėdučių keltuvas „Seggiovia Colle Rotondo“ į apie 1 600 m aukščio viršukalnę, bet pastaraisiais metais jis dažnai dirba su pertraukomis arba būna uždarytas. Prieš kelionę pasitikrinkite vietinę informaciją.</p>
+            <p class="sources">Šaltiniai: <a href="https://www.tripadvisor.com/Attraction_Review-g194910-d6997834-Reviews-Seggiovia_Monte_Rotondo-Scanno_Province_of_L_Aquila_Abruzzo.html" target="_blank" rel="noopener">tripadvisor.com</a>, <a href="https://www.visitscanno.com/poi-scanno/seggiovia-scanno/" target="_blank" rel="noopener">visitscanno.com</a></p>
+            <div class="links"><a class="map-link" href="https://www.google.com/maps/dir/?api=1&amp;origin=42.4618,14.216&amp;destination=41.92173,13.86366&amp;travelmode=driving" target="_blank" rel="noopener">Kaip nuvykti ↗</a><a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@41.92173,13.86366,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a></div>
+            <div class="nearby"><p class="nearby-title">Verta aplankyti netoliese:</p><ul><li><strong>Chiesa di Santa Maria dell&#x27;Annunziata</strong>. Nedidelė bažnytėlė ant ežero kranto <a href="https://www.google.com/maps/search/?api=1&amp;query=Chiesa%20di%20Santa%20Maria%20dell%27Annunziata%2C%20Scanno%2C%20L%27Aquila%2C%20Italija&amp;query_place_id=ChIJe4ZE8QoTMBMR3qfyHtcP9N0" target="_blank" rel="noopener">žemėlapyje ↗</a></li><li><strong>Vista Panoramica del Cuore</strong>. Apžvalgos taškas su geriausiu vaizdu į širdies formos ežerą <a href="https://www.google.com/maps/search/?api=1&amp;query=Vista%20Panoramica%20del%20Cuore%2C%20Scanno%2C%20L%27Aquila%2C%20Italija&amp;query_place_id=ChIJx2lnx_ETMBMRzQ8M2qzffYU" target="_blank" rel="noopener">žemėlapyje ↗</a></li><li><strong>Frattura Vecchia</strong>. Apleistas kaimelis, sugriautas 1915 m. žemės drebėjimo <a href="https://www.google.com/maps/search/?api=1&amp;query=Frattura%20Vecchia%2C%20Scanno%2C%20L%27Aquila%2C%20Italija&amp;query_place_id=ChIJ8Uko8IATMBMRy4FGs4DCHxI" target="_blank" rel="noopener">žemėlapyje ↗</a></li></ul></div>
+          </div>
+        </article>
       </div>
     </section>
-
-    <section class="group" style="--group-color:#D4AF6A; --group-tint:rgba(212,175,106,.16);">
-      <div class="group-head">
-        <h2>4 kryptis — Roma</h2>
-        <span class="group-road">A25 / A24 greitkeliu, į vakarus</span>
-      </div>
-      <p class="group-note">Toliausiai nutolusi kryptis šiame sąraše — geriau vykti kaip atskirą dienos ar dviejų dienų išvyką, o ne derinti su kitais objektais tą pačią dieną.</p>
+    <section class="group" data-group="g4" style="--gc:#D4AF6A;--gt:rgba(212,175,106,0.16)">
+      <div class="group-head"><span class="group-label">4 kryptis</span><h2>Roma</h2><span class="group-road">A25 ir A24 greitkeliais, į vakarus</span></div>
+      <p class="group-note">Toliausiai nutolusi kryptis šiame sąraše. Geriau vykti atskirai vienos ar dviejų dienų išvykai, o ne derinti su kitomis vietomis tą pačią dieną.</p>
       <div class="cards">
-
-        <button class="card" data-id="7" data-group="roma">
+        <article class="card" data-id="7" data-group="g4" tabindex="0">
           <span class="num">7</span>
-          <span>
+          <div>
             <p class="card-title">Roma</p>
-            <span class="chips"><span class="chip">207 km</span><span class="chip">~2 val.</span></span>
-            <p class="card-desc">Italijos sostinė su pasaulinio garso istoriniu centru — Koliziejumi, Romos forumu, Vatikanu. Kelias veda per A25 ir A24 greitkelius per Apeninus.</p>
-            <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=41.8967,12.4822&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
-            <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@41.8967,12.4822,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
-            <div class="nearby">
-              <p class="nearby-title">Verta aplankyti netoliese:</p>
-              <ul>
-              <li><strong>Pantheon</strong> — geriausiai išlikęs antikos pastatas Romoje. <a href="https://www.google.com/maps/search/?api=1&query=Pantheon&query_place_id=ChIJqUCGZ09gLxMRLM42IPpl0co" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-              <li><strong>Trevi fontanas</strong> — garsiausias Romos fontanas, tradicija mesti monetą. <a href="https://www.google.com/maps/search/?api=1&query=Trevi%20fontanas&query_place_id=ChIJ1UCDJ1NgLxMRtrsCzOHxdvY" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-              <li><strong>Piazza del Popolo</strong> — viena gražiausių Romos aikščių su obelisku. <a href="https://www.google.com/maps/search/?api=1&query=Piazza%20del%20Popolo&query_place_id=ChIJhxbo5fhgLxMRUEPO_f-f7kM" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-              </ul>
-            </div>
-          </span>
-        </button>
-
+            <span class="chips"><span class="chip">210 km</span><span class="chip">2 val. 5 min.</span></span>
+            <p class="card-desc">Italijos sostinė su pasaulinio garso istoriniu centru: Koliziejumi, Romos forumu, Vatikanu. Kelias veda A25 ir A24 greitkeliais per Apeninus.</p>
+            
+            
+            <div class="links"><a class="map-link" href="https://www.google.com/maps/dir/?api=1&amp;origin=42.4618,14.216&amp;destination=41.8967,12.4822&amp;travelmode=driving" target="_blank" rel="noopener">Kaip nuvykti ↗</a><a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@41.8967,12.4822,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a></div>
+            <div class="nearby"><p class="nearby-title">Verta aplankyti netoliese:</p><ul><li><strong>Pantheon</strong>. Geriausiai išlikęs antikos pastatas Romoje <a href="https://www.google.com/maps/search/?api=1&amp;query=Pantheon%2C%20Roma%2C%20Italija&amp;query_place_id=ChIJqUCGZ09gLxMRLM42IPpl0co" target="_blank" rel="noopener">žemėlapyje ↗</a></li><li><strong>Trevi fontanas</strong>. Garsiausias Romos fontanas, tradicija mesti monetą <a href="https://www.google.com/maps/search/?api=1&amp;query=Trevi%20fontanas%2C%20Roma%2C%20Italija&amp;query_place_id=ChIJ1UCDJ1NgLxMRtrsCzOHxdvY" target="_blank" rel="noopener">žemėlapyje ↗</a></li><li><strong>Piazza del Popolo</strong>. Viena gražiausių Romos aikščių su obelisku <a href="https://www.google.com/maps/search/?api=1&amp;query=Piazza%20del%20Popolo%2C%20Roma%2C%20Italija&amp;query_place_id=ChIJhxbo5fhgLxMRUEPO_f-f7kM" target="_blank" rel="noopener">žemėlapyje ↗</a></li></ul></div>
+          </div>
+        </article>
       </div>
     </section>
-
-    <section class="group" style="--group-color:#B98CE0; --group-tint:rgba(185,140,224,.16);">
-      <div class="group-head">
-        <h2>5 kryptis — Urvas</h2>
-        <span class="group-road">A14, į pietus nuo Pescara</span>
-      </div>
-      <p class="group-note">Veikia tik šiltuoju sezonu — vasarą kasdien, pavasarį ir rudenį tik savaitgaliais. Prieš vykstant patikrinkite darbo laiką oficialioje svetainėje.</p>
+    <section class="group" data-group="g5" style="--gc:#B98CE0;--gt:rgba(185,140,224,0.16)">
+      <div class="group-head"><span class="group-label">5 kryptis</span><h2>Urvas</h2><span class="group-road">SS81, į pietus nuo Pescaros</span></div>
+      <p class="group-note">Veikia tik šiltuoju sezonu: vasarą kasdien, pavasarį ir rudenį tik savaitgaliais. Prieš vykstant patikrinkite darbo laiką oficialioje svetainėje.</p>
       <div class="cards">
-
-        <button class="card" data-id="8" data-group="cave">
+        <article class="card" data-id="8" data-group="g5" tabindex="0">
           <span class="num">8</span>
-          <span>
+          <div>
             <p class="card-title">Grotta del Cavallone</p>
-            <span class="chips"><span class="chip">46 km</span><span class="chip">~50 min</span></span>
-            <p class="card-desc">Įspūdingas urvas Majella nacionaliniame parke — vienas aukščiausiai Europoje esančių lankomų urvų (įėjimas 1475 m aukštyje). Pasiekiamas atviru keltuvu (~20 min) ir 280–320 laiptelių; visa ekskursija su gidu trunka ~3 val., suaugusiam kainuoja ~27 €. Viduje visada ~10°C ir didelė drėgmė — būtina šilta apranga ir tvirti batai; šalmus išduoda vietoje (<a href="https://www.grottedelcavallone.it/en/information/advice-for-the-visit" target="_blank" rel="noopener">šaltinis</a>, <a href="https://en.wikipedia.org/wiki/Grotta_del_Cavallone" target="_blank" rel="noopener">šaltinis</a>).</p>
-            <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.0359,14.1565&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
-            <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.0359,14.1565,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
-            <div class="nearby">
-              <p class="nearby-title">Verta aplankyti netoliese:</p>
-              <ul>
-              <li><strong>Loggetta di Taranta Peligna</strong> — į uolą iškaltas takas su vaizdinga apžvalgos aikštele. <a href="https://www.google.com/maps/search/?api=1&query=Loggetta%20di%20Taranta%20Peligna&query_place_id=ChIJmXS06A1dMBMRK6ANIVWdN4U" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-              <li><strong>Sacrario della Brigata Maiella</strong> — Antrojo pasaulinio karo memorialas. <a href="https://www.google.com/maps/search/?api=1&query=Sacrario%20della%20Brigata%20Maiella&query_place_id=ChIJu6PUbEtcMBMRkxh1LPGjuUU" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-              <li><strong>Grotta Tarì</strong> — nedidelis piemenų prieglaudos urvas kalnuose. <a href="https://www.google.com/maps/search/?api=1&query=Grotta%20Tar%C3%AC&query_place_id=ChIJW3y3-MNdMBMRpUnEJRAZ0DY" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
-              </ul>
-            </div>
-          </span>
-        </button>
-
+            <span class="chips"><span class="chip">76 km</span><span class="chip">1 val. 15 min.</span></span>
+            <p class="card-desc">Urvas Majella nacionaliniame parke, vienas aukščiausiai Europoje esančių lankomų urvų (įėjimas 1 475 m aukštyje). Pasiekiamas atviru keltuvu (apie 20 min.) ir 280 iki 320 laiptelių. Visa ekskursija su gidu trunka apie 3 val., suaugusiam kainuoja apie 27 €.</p>
+            <p class="warn">Viduje visada apie 10 °C ir didelė drėgmė, todėl būtina šilta apranga ir tvirti batai. Šalmus išduoda vietoje.</p>
+            <p class="sources">Šaltiniai: <a href="https://www.grottedelcavallone.it/en/information/advice-for-the-visit" target="_blank" rel="noopener">grottedelcavallone.it</a>, <a href="https://en.wikipedia.org/wiki/Grotta_del_Cavallone" target="_blank" rel="noopener">Wikipedia</a></p>
+            <div class="links"><a class="map-link" href="https://www.google.com/maps/dir/?api=1&amp;origin=42.4618,14.216&amp;destination=42.02586,14.16177&amp;travelmode=driving" target="_blank" rel="noopener">Kaip nuvykti ↗</a><a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.02586,14.16177,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a></div>
+            <div class="nearby"><p class="nearby-title">Verta aplankyti netoliese:</p><ul><li><strong>Loggetta di Taranta Peligna</strong>. Į uolą iškaltas takas su vaizdinga apžvalgos aikštele <a href="https://www.google.com/maps/search/?api=1&amp;query=Loggetta%20di%20Taranta%20Peligna%2C%20Taranta%20Peligna%2C%20Chieti%2C%20Italija&amp;query_place_id=ChIJmXS06A1dMBMRK6ANIVWdN4U" target="_blank" rel="noopener">žemėlapyje ↗</a></li><li><strong>Sacrario della Brigata Maiella</strong>. Antrojo pasaulinio karo memorialas <a href="https://www.google.com/maps/search/?api=1&amp;query=Sacrario%20della%20Brigata%20Maiella%2C%20Taranta%20Peligna%2C%20Chieti%2C%20Italija&amp;query_place_id=ChIJu6PUbEtcMBMRkxh1LPGjuUU" target="_blank" rel="noopener">žemėlapyje ↗</a></li><li><strong>Grotta Tarì</strong>. Nedidelis piemenų prieglaudos urvas kalnuose <a href="https://www.google.com/maps/search/?api=1&amp;query=Grotta%20Tar%C3%AC%2C%20Taranta%20Peligna%2C%20Chieti%2C%20Italija&amp;query_place_id=ChIJW3y3-MNdMBMRpUnEJRAZ0DY" target="_blank" rel="noopener">žemėlapyje ↗</a></li></ul></div>
+          </div>
+        </article>
       </div>
     </section>
 
@@ -756,69 +280,96 @@
 </div>
 
 <footer>
-  Atstumai — apytiksliai, keliu (ne tiesia linija), pagal SS16, A14, A25, SS17/SS83 kelius.
+  <p>Atstumai ir laikas apytiksliai, keliaujant automobiliu nuo starto taško, be kamščių ir sustojimų.</p>
+  <p>Atstumai ir laikas pagal Google Maps rekomenduojamą maršrutą be eismo.</p>
+  <p>Informacija tikrinta 2026-09-17. Darbo laiką, kainas ir sezoninius uždarymus prieš kelionę verta pasitikrinti dar kartą.</p>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
-  const cards = document.querySelectorAll('.card');
-  const markers = document.querySelectorAll('.marker');
-  const svg = document.getElementById('mapSvg');
-  const mapPanel = document.getElementById('mapPanel');
+const GIDAS = {"points": [{"id": 0, "lat": 42.4618, "lng": 14.216, "label": "P", "name": "Pescara", "group": "start", "color": "#E3A857"}, {"id": 1, "lat": 42.3521, "lng": 14.4027, "label": "1", "name": "Ortona", "group": "g1", "color": "#5FA8C9"}, {"id": 2, "lat": 42.30569, "lng": 14.45104, "label": "2", "name": "Trabocco Punta Fornace", "group": "g1", "color": "#5FA8C9"}, {"id": 3, "lat": 42.1046, "lng": 14.7059, "label": "3", "name": "Vasto", "group": "g1", "color": "#5FA8C9"}, {"id": 4, "lat": 42.3507, "lng": 13.3999, "label": "4", "name": "L'Aquila", "group": "g2", "color": "#8FBE6B"}, {"id": 5, "lat": 42.42583, "lng": 13.52852, "label": "5", "name": "Funivia Campo Imperatore", "group": "g2", "color": "#8FBE6B"}, {"id": 6, "lat": 41.92173, "lng": 13.86366, "label": "6", "name": "Lago di Scanno", "group": "g3", "color": "#D98B4F"}, {"id": 7, "lat": 41.8967, "lng": 12.4822, "label": "7", "name": "Roma", "group": "g4", "color": "#D4AF6A"}, {"id": 8, "lat": 42.02586, "lng": 14.16177, "label": "8", "name": "Grotta del Cavallone", "group": "g5", "color": "#B98CE0"}], "routes": [{"group": "g1", "color": "#5FA8C9", "path": [[42.4618, 14.216], [42.3521, 14.4027], [42.30569, 14.45104], [42.1046, 14.7059]]}, {"group": "g2", "color": "#8FBE6B", "path": [[42.4618, 14.216], [42.3507, 13.3999], [42.42583, 13.52852]]}, {"group": "g3", "color": "#D98B4F", "path": [[42.4618, 14.216], [41.92173, 13.86366]]}, {"group": "g4", "color": "#D4AF6A", "path": [[42.4618, 14.216], [41.8967, 12.4822]]}, {"group": "g5", "color": "#B98CE0", "path": [[42.4618, 14.216], [42.02586, 14.16177]]}]};
+
+(function(){
+  const cards = [...document.querySelectorAll('.card')];
+  const groups = [...document.querySelectorAll('.group')];
+  const tabs = [...document.querySelectorAll('.tab')];
+  const pins = {}, lines = [];
+  let map = null;
+
+  if (window.L){
+    map = L.map('map', {scrollWheelZoom:false, zoomControl:true});
+    // OSM fonas be API rakto; tamsus padaromas CSS filtru (.leaflet-tile-pane)
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom:19,
+      attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    const pts = [];
+    GIDAS.points.forEach(p => {
+      const icon = L.divIcon({
+        className:'', iconSize:[26,26], iconAnchor:[13,13],
+        html:'<div class="pin'+(p.group==='start'?' start':'')+'" data-id="'+p.id+'" style="--gc:'+p.color+'">'+p.label+'</div>'
+      });
+      const m = L.marker([p.lat,p.lng], {icon, title:p.name, keyboard:true}).addTo(map);
+      m.on('click', () => activate(p.id, true));
+      pins[p.id] = {marker:m, group:p.group};
+      pts.push([p.lat,p.lng]);
+    });
+    GIDAS.routes.forEach(r => {
+      const l = L.polyline(r.path, {color:r.color, weight:2.4, dashArray:'2 8', lineCap:'round', opacity:.85}).addTo(map);
+      lines.push({line:l, group:r.group});
+    });
+    if (pts.length === 1) map.setView(pts[0], 12);
+    else map.fitBounds(pts, {padding:[30,30]});
+  } else {
+    document.getElementById('map').innerHTML = '<p style="padding:1rem;color:var(--ink-soft)">Žemėlapis neįsikėlė. Sąrašas ir nuorodos veikia.</p>';
+  }
+
+  function pinEl(id){ return document.querySelector('.pin[data-id="'+id+'"]'); }
+
+  function activate(id, fromMap){
+    const card = document.querySelector('.card[data-id="'+id+'"]');
+    const wasActive = card && card.classList.contains('active');
+    cards.forEach(c => { c.classList.remove('active'); c.setAttribute('aria-pressed','false'); });
+    document.querySelectorAll('.pin.active').forEach(p => p.classList.remove('active'));
+    document.getElementById('map').classList.remove('map-dim');
+    if (wasActive && !fromMap) return;
+    if (card){ card.classList.add('active'); card.setAttribute('aria-pressed','true'); }
+    const pe = pinEl(id);
+    if (pe){ pe.classList.add('active'); document.getElementById('map').classList.add('map-dim'); }
+    if (map && pins[id]){
+      pins[id].marker.setZIndexOffset(1000);
+      Object.keys(pins).forEach(k => { if (k !== String(id)) pins[k].marker.setZIndexOffset(0); });
+      if (!map.getBounds().pad(-0.1).contains(pins[id].marker.getLatLng())) map.panTo(pins[id].marker.getLatLng());
+    }
+    if (fromMap && card){
+      const g = card.closest('.group');
+      if (g && g.classList.contains('hidden')) setFilter('all');
+      card.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  }
 
   cards.forEach(card => {
-    card.setAttribute('aria-pressed', 'false');
-    card.addEventListener('click', () => {
-      const id = card.getAttribute('data-id');
-      const isActive = card.classList.contains('active');
-
-      cards.forEach(c => { c.classList.remove('active'); c.setAttribute('aria-pressed','false'); });
-      markers.forEach(m => m.classList.remove('active'));
-      svg.classList.remove('has-active');
-      mapPanel.classList.remove('has-active');
-
-      if (!isActive){
-        card.classList.add('active');
-        card.setAttribute('aria-pressed','true');
-        svg.classList.add('has-active');
-        mapPanel.classList.add('has-active');
-        const marker = document.querySelector('.marker[data-id="'+id+'"]');
-        if (marker) marker.classList.add('active');
-      }
+    card.setAttribute('aria-pressed','false');
+    card.addEventListener('click', e => { if (!e.target.closest('a')) activate(card.dataset.id, false); });
+    card.addEventListener('keydown', e => {
+      if ((e.key === 'Enter' || e.key === ' ') && e.target === card){ e.preventDefault(); activate(card.dataset.id, false); }
     });
   });
 
-  const routes = document.querySelectorAll('.route');
-  const tabs = document.querySelectorAll('.tab');
-
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      const filter = tab.dataset.filter;
-
-      cards.forEach(c => {
-        c.classList.toggle('hidden', filter !== 'all' && c.dataset.group !== filter && c.dataset.group !== 'start');
-      });
-      markers.forEach(m => {
-        m.classList.toggle('dimmed', filter !== 'all' && m.dataset.group !== filter);
-      });
-      routes.forEach(r => {
-        r.classList.toggle('dimmed', filter !== 'all' && r.dataset.group !== filter);
-      });
-
-      const activeCard = document.querySelector('.card.active');
-      if (activeCard){
-        const stillVisible = filter === 'all' || activeCard.dataset.group === filter;
-        if (!stillVisible){
-          activeCard.classList.remove('active');
-          activeCard.setAttribute('aria-pressed','false');
-          markers.forEach(m => m.classList.remove('active'));
-          svg.classList.remove('has-active');
-          mapPanel.classList.remove('has-active');
-        }
-      }
+  function setFilter(f){
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.filter === f));
+    groups.forEach(g => g.classList.toggle('hidden', f !== 'all' && g.dataset.group !== f && g.dataset.group !== 'start'));
+    Object.keys(pins).forEach(k => {
+      const pe = pinEl(k);
+      if (pe) pe.classList.toggle('dimmed', f !== 'all' && pins[k].group !== f && pins[k].group !== 'start');
     });
-  });
+    lines.forEach(l => l.line.setStyle({opacity: (f === 'all' || l.group === f) ? .85 : .1}));
+    const act = document.querySelector('.card.active');
+    if (act && act.closest('.group').classList.contains('hidden')) activate(act.dataset.id, false);
+  }
+  tabs.forEach(t => t.addEventListener('click', () => setFilter(t.dataset.filter)));
+})();
 </script>
 
 </body>

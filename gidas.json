@@ -1,0 +1,174 @@
+{
+  "pavadinimas": "Abruzzo nuo Pescaros",
+  "ivadas": "Aštuonios vietos, sugrupuotos į penkias kryptis. Paspauskite vietą sąraše, ir ji bus pažymėta žemėlapyje, arba paspauskite skaičių žemėlapyje, ir atsidarys jos aprašymas.",
+  "transportas": "automobilis",
+  "grupiu_zodis": "kryptis",
+  "patikrinta": "2026-09-17",
+  "pastabos_apacioje": [
+    "Atstumai ir laikas pagal Google Maps rekomenduojamą maršrutą be eismo."
+  ],
+  "startas": {
+    "pavadinimas": "Pescara",
+    "vieta": "Abruzzo, Italija",
+    "zyme": "P",
+    "lat": 42.4618,
+    "lng": 14.216,
+    "aprasymas": "Didžiausias Abruzzo regiono miestas ir šio gido pradžios taškas. Modernus pajūrio miestas su ilgu paplūdimiu, žinomas kaip poeto Gabriele D'Annunzio gimtinė.",
+    "netoliese": [
+      {"pavadinimas": "Ponte del Mare", "aprasymas": "Didžiausias dviračių ir pėsčiųjų tiltas Italijoje, puikus vaizdas į jūrą", "place_id": "ChIJ7WfMUV2mMRMRwMWFlo-PxFk"},
+      {"pavadinimas": "Gabriele D'Annunzio gimtasis namas-muziejus", "aprasymas": "Poeto gimtinė senamiestyje", "place_id": "ChIJ5-jtSWumMRMREzs0fcMmndM"},
+      {"pavadinimas": "Museo delle Genti d'Abruzzo", "aprasymas": "Regiono etnografijos ir istorijos muziejus", "place_id": "ChIJtXbZHWumMRMRlf_ow09Egvk"}
+    ]
+  },
+  "kryptys": [
+    {
+      "pavadinimas": "Pietų pakrantė",
+      "trumpas_pavadinimas": "Pakrantė",
+      "kelias": "SS16 ir A14, į pietus nuo Pescaros",
+      "pastaba": "Costa dei Trabocchi driekiasi apie 70 km nuo Ortonos iki Vasto. Pakeliui dešimtys medinių žvejybos konstrukcijų, dalis jų paverstos restoranais. Visi trys taškai tinka vienai dienai.",
+      "objektai": [
+        {
+          "pavadinimas": "Ortona",
+          "vieta": "Ortona, Chieti, Italija",
+          "lat": 42.3521, "lng": 14.4027,
+          "km": 28, "laikas": "30 min.",
+          "aprasymas": "Senas pakrantės miestelis su istoriniu centru ir aukštai virš jūros esančia terasa. Nuo čia prasideda Costa dei Trabocchi, važiuojant iš šiaurės. Žinomas ir iš Antrojo pasaulinio karo istorijos (Ortonos mūšis).",
+          "netoliese": [
+            {"pavadinimas": "Castello Aragonese", "aprasymas": "Įspūdinga pilis ant uolos virš jūros, įėjimas nemokamas", "place_id": "ChIJhxU2d2oEMRMR6OT3WoVXmgU"},
+            {"pavadinimas": "Passeggiata Orientale", "aprasymas": "Vaizdinga pakrantės promenada nuo pilies iki uosto", "place_id": "ChIJS2WPtU4FMRMRHpjjrJ0XDpI"},
+            {"pavadinimas": "Costa dei Trabocchi dviračių takas", "aprasymas": "Buvusi geležinkelio linija, paversta pajūrio taku", "place_id": "ChIJWVgdJbgFMRMRk8-CQWkyWbo"}
+          ]
+        },
+        {
+          "pavadinimas": "Trabocco Punta Fornace",
+          "vieta": "San Vito Chietino, Chieti, Italija",
+          "lat": 42.30569, "lng": 14.45104,
+          "km": 35, "laikas": "35 min.",
+          "aprasymas": "San Vito Chietino. Vienas gražiausių ir žinomiausių trabocchi: ant polių virš jūros stovinti medinė žvejybos konstrukcija, dabar veikianti kaip žuvies restoranas su vaizdu į atvirą jūrą.",
+          "netoliese": [
+            {"pavadinimas": "Promontorio Dannunziano", "aprasymas": "Apžvalgos aikštelė su vaizdu į Adrijos jūrą", "place_id": "ChIJWZZsdSkDMRMR5B9Cir-He5g"},
+            {"pavadinimas": "Belvedere Marconi", "aprasymas": "Panoraminė aikštelė su žiūronais turistams", "place_id": "ChIJ78CVyxkDMRMRFKjSB_ZqHeg"},
+            {"pavadinimas": "San Vito Chietino paplūdimys", "aprasymas": "Jaukus pajūris su priėjimu prie dviračių tako", "place_id": "ChIJmVc1pSsDMRMRlCbMlAvg0Fs"}
+          ]
+        },
+        {
+          "pavadinimas": "Vasto",
+          "vieta": "Vasto, Chieti, Italija",
+          "lat": 42.1046, "lng": 14.7059,
+          "km": 75, "laikas": "55 min.",
+          "aprasymas": "Ant kalvos įsikūręs viduramžių miestelis su istoriniu centru ir Palazzo d'Avalos rūmais. Netoliese Vasto Marina ir Punta Penna paplūdimiai. Tai pietinis Costa dei Trabocchi taškas.",
+          "netoliese": [
+            {"pavadinimas": "Castello Caldoresco", "aprasymas": "Viduramžių pilies liekanos senamiestyje", "place_id": "ChIJYTs5gFTcMBMRj49-TxXhyeQ"},
+            {"pavadinimas": "Palazzo d'Avalos", "aprasymas": "Rūmai su muziejumi ir gražiu sodu", "place_id": "ChIJmQD2BVTcMBMROlrHRGHKzbA"},
+            {"pavadinimas": "Pontile di Vasto Marina", "aprasymas": "Įsimylėjėlių molas su vaizdu į pakrantę", "place_id": "ChIJdxP3NzjdMBMRxroOPUCBmiA"}
+          ]
+        }
+      ]
+    },
+    {
+      "pavadinimas": "Vakarų kalnai",
+      "trumpas_pavadinimas": "Kalnai",
+      "kelias": "A25 arba A14 ir A24, į vakarus",
+      "pastaba": "L'Aquila ir Gran Sasso keltuvas yra tame pačiame koridoriuje, tarp jų apie 19 km A24 greitkeliu (apie 20 min.), todėl patogu aplankyti per vieną dieną.",
+      "objektai": [
+        {
+          "pavadinimas": "L'Aquila",
+          "vieta": "L'Aquila, Italija",
+          "lat": 42.3507, "lng": 13.3999,
+          "km": 108, "laikas": "1 val. 25 min.",
+          "aprasymas": "Abruzzo regiono sostinė. Istorinis centras iš dalies atstatytas po 2009 m. žemės drebėjimo. Verta pamatyti Collemaggio baziliką ir Ispanų tvirtovę (Forte Spagnolo).",
+          "netoliese": [
+            {"pavadinimas": "Fontana delle 99 Cannelle", "aprasymas": "Simbolinis 99 čiurkšlių fontanas senamiestyje", "place_id": "ChIJZbPYOvbSLxMRufbbyo4m2gc"},
+            {"pavadinimas": "Fontana Luminosa", "aprasymas": "Žinomas fontanas miesto centre", "place_id": "ChIJMXY6PADTLxMRjonPZeD6H1o"},
+            {"pavadinimas": "MUNDA", "aprasymas": "Nacionalinis Abruzzo muziejus su meno ir archeologijos kolekcija", "place_id": "ChIJYYR9a_bSLxMRL0nZGsJeL7M"}
+          ]
+        },
+        {
+          "pavadinimas": "Funivia Campo Imperatore",
+          "vieta": "Fonte Cerreto, Assergi, Italija",
+          "lat": 42.42583, "lng": 13.52852,
+          "km": 107, "laikas": "1 val. 15 min.",
+          "zymos": ["iki apatinės stoties"],
+          "aprasymas": "Keltuvas „Funivia del Gran Sasso d'Italia“ iš Fonte Cerreto slėnio didelėmis gondolomis kelia tiesiai į Campo Imperatore plokščiakalnę (apie 2 100 m), vadinamą „mažuoju Tibetu“. Tai pagrindinis regiono keltuvas keliautojams ir slidininkams. Viršuje, Gran Sasso e Monti della Laga parke, žygiai pėsčiomis ir vaizdai į Corno Grande viršūnę.",
+          "perspejimas": "Nuoroda „Kaip nuvykti“ veda į apatinę stotį Fonte Cerreto, kur paliekamas automobilis. Viršutinė stotis ant plokščiakalnės automobiliu pasiekiama tik ilgu kalnų keliu.",
+          "saltiniai": [
+            {"pavadinimas": "ilgransasso.it", "url": "https://www.ilgransasso.it/la-stazione/"},
+            {"pavadinimas": "laquilablog.it", "url": "https://www.laquilablog.it/funivia-del-gran-sasso-dal-1-agosto-prima-corsa-anticipata-alle-8/"}
+          ],
+          "netoliese": [
+            {"pavadinimas": "Corno Grande", "aprasymas": "Aukščiausia Apeninų viršūnė, populiarus žygių tikslas", "place_id": "ChIJNxBQnb7RMRMRzDMveOWGs-s"},
+            {"pavadinimas": "Fonte Cerreto", "aprasymas": "Keltuvo apatinė stotis su restoranais ir automobilių stovėjimo aikštele", "place_id": "ChIJz0K2OFYqLhMR781yXNJw3qg"}
+          ]
+        }
+      ]
+    },
+    {
+      "pavadinimas": "Giliai kalnuose",
+      "trumpas_pavadinimas": "Kalnų ežeras",
+      "kelias": "A25 iki Sulmonos, toliau SR479",
+      "pastaba": "Paskutinė kelio dalis nuo Sulmonos kalnuota ir siaura, per Sagittario tarpeklį. Rekomenduojama skirti atskirą dieną.",
+      "objektai": [
+        {
+          "pavadinimas": "Lago di Scanno",
+          "vieta": "Scanno, L'Aquila, Italija",
+          "lat": 41.92173, "lng": 13.86366,
+          "km": 93, "laikas": "1 val. 10 min.",
+          "aprasymas": "Didžiausias natūralus ežeras Abruzzo regione, susiformavęs po nuošliaužos, užtvenkusios Tasso upę. Vietinės legendos jį sieja su širdies forma. Aplink ežerą pėsčiųjų takai ir du paplūdimiai maudytis vasarą.",
+          "perspejimas": "Scanno miestelyje veikia kėdučių keltuvas „Seggiovia Colle Rotondo“ į apie 1 600 m aukščio viršukalnę, bet pastaraisiais metais jis dažnai dirba su pertraukomis arba būna uždarytas. Prieš kelionę pasitikrinkite vietinę informaciją.",
+          "saltiniai": [
+            {"pavadinimas": "tripadvisor.com", "url": "https://www.tripadvisor.com/Attraction_Review-g194910-d6997834-Reviews-Seggiovia_Monte_Rotondo-Scanno_Province_of_L_Aquila_Abruzzo.html"},
+            {"pavadinimas": "visitscanno.com", "url": "https://www.visitscanno.com/poi-scanno/seggiovia-scanno/"}
+          ],
+          "netoliese": [
+            {"pavadinimas": "Chiesa di Santa Maria dell'Annunziata", "aprasymas": "Nedidelė bažnytėlė ant ežero kranto", "place_id": "ChIJe4ZE8QoTMBMR3qfyHtcP9N0"},
+            {"pavadinimas": "Vista Panoramica del Cuore", "aprasymas": "Apžvalgos taškas su geriausiu vaizdu į širdies formos ežerą", "place_id": "ChIJx2lnx_ETMBMRzQ8M2qzffYU"},
+            {"pavadinimas": "Frattura Vecchia", "aprasymas": "Apleistas kaimelis, sugriautas 1915 m. žemės drebėjimo", "place_id": "ChIJ8Uko8IATMBMRy4FGs4DCHxI"}
+          ]
+        }
+      ]
+    },
+    {
+      "pavadinimas": "Roma",
+      "kelias": "A25 ir A24 greitkeliais, į vakarus",
+      "pastaba": "Toliausiai nutolusi kryptis šiame sąraše. Geriau vykti atskirai vienos ar dviejų dienų išvykai, o ne derinti su kitomis vietomis tą pačią dieną.",
+      "objektai": [
+        {
+          "pavadinimas": "Roma",
+          "vieta": "Roma, Italija",
+          "lat": 41.8967, "lng": 12.4822,
+          "km": 210, "laikas": "2 val. 5 min.",
+          "aprasymas": "Italijos sostinė su pasaulinio garso istoriniu centru: Koliziejumi, Romos forumu, Vatikanu. Kelias veda A25 ir A24 greitkeliais per Apeninus.",
+          "netoliese": [
+            {"pavadinimas": "Pantheon", "aprasymas": "Geriausiai išlikęs antikos pastatas Romoje", "place_id": "ChIJqUCGZ09gLxMRLM42IPpl0co"},
+            {"pavadinimas": "Trevi fontanas", "aprasymas": "Garsiausias Romos fontanas, tradicija mesti monetą", "place_id": "ChIJ1UCDJ1NgLxMRtrsCzOHxdvY"},
+            {"pavadinimas": "Piazza del Popolo", "aprasymas": "Viena gražiausių Romos aikščių su obelisku", "place_id": "ChIJhxbo5fhgLxMRUEPO_f-f7kM"}
+          ]
+        }
+      ]
+    },
+    {
+      "pavadinimas": "Urvas",
+      "kelias": "SS81, į pietus nuo Pescaros",
+      "pastaba": "Veikia tik šiltuoju sezonu: vasarą kasdien, pavasarį ir rudenį tik savaitgaliais. Prieš vykstant patikrinkite darbo laiką oficialioje svetainėje.",
+      "objektai": [
+        {
+          "pavadinimas": "Grotta del Cavallone",
+          "vieta": "Taranta Peligna, Chieti, Italija",
+          "lat": 42.02586, "lng": 14.16177,
+          "km": 76, "laikas": "1 val. 15 min.",
+          "aprasymas": "Urvas Majella nacionaliniame parke, vienas aukščiausiai Europoje esančių lankomų urvų (įėjimas 1 475 m aukštyje). Pasiekiamas atviru keltuvu (apie 20 min.) ir 280 iki 320 laiptelių. Visa ekskursija su gidu trunka apie 3 val., suaugusiam kainuoja apie 27 €.",
+          "perspejimas": "Viduje visada apie 10 °C ir didelė drėgmė, todėl būtina šilta apranga ir tvirti batai. Šalmus išduoda vietoje.",
+          "saltiniai": [
+            {"pavadinimas": "grottedelcavallone.it", "url": "https://www.grottedelcavallone.it/en/information/advice-for-the-visit"},
+            {"pavadinimas": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Grotta_del_Cavallone"}
+          ],
+          "netoliese": [
+            {"pavadinimas": "Loggetta di Taranta Peligna", "aprasymas": "Į uolą iškaltas takas su vaizdinga apžvalgos aikštele", "place_id": "ChIJmXS06A1dMBMRK6ANIVWdN4U"},
+            {"pavadinimas": "Sacrario della Brigata Maiella", "aprasymas": "Antrojo pasaulinio karo memorialas", "place_id": "ChIJu6PUbEtcMBMRkxh1LPGjuUU"},
+            {"pavadinimas": "Grotta Tarì", "aprasymas": "Nedidelis piemenų prieglaudos urvas kalnuose", "place_id": "ChIJW3y3-MNdMBMRpUnEJRAZ0DY"}
+          ]
+        }
+      ]
+    }
+  ]
+}
