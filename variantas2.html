@@ -207,6 +207,7 @@
     align-items:center;
     gap:.3rem;
     margin-top:.6rem;
+    margin-right:1rem;
     font-size:.8rem;
     font-weight:600;
     color:var(--group-color, var(--sea));
@@ -214,6 +215,7 @@
     position:relative;
   }
   .map-link:hover{ text-decoration:underline; }
+  .food-link{ opacity:.8; }
 
   /* ---------- SVG markers ---------- */
   .map-svg a{ cursor:pointer; }
@@ -296,7 +298,7 @@
       </g>
 
       <!-- Pescara -->
-      <a href="https://www.google.com/maps?q=42.4618,14.2160" target="_blank" rel="noopener">
+      <a href="https://www.google.com/maps/search/restaurants/@42.4618,14.2160,14z" target="_blank" rel="noopener" aria-label="Kur pavalgyti Pescaroje">
       <g>
         <circle cx="448" cy="123" r="7" fill="var(--amber)" stroke="var(--bg)" stroke-width="2"/>
         <text x="448" y="106" text-anchor="middle" font-family="Bricolage Grotesque" font-size="12" font-weight="700" fill="var(--amber)">PESCARA</text>
@@ -383,6 +385,7 @@
       <span class="chips"><span class="chip">25 min</span><span class="chip">SS16</span></span>
       <p class="card-desc">Senas pakrantės miestelis su istoriniu centru ir terasa aukštai virš jūros. Pirmasis Costa dei Trabocchi taškas iš šiaurės; žinomas ir iš Antrojo pasaulinio karo istorijos.</p>
       <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.3521,14.4027&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
+            <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.3521,14.4027,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
     </button>
 
     <button class="card" data-id="2" data-group="coast" data-num="02" style="--group-color:var(--sea)">
@@ -391,6 +394,7 @@
       <span class="chips"><span class="chip">40 min</span><span class="chip">San Vito Chietino</span></span>
       <p class="card-desc">Vienas gražiausių trabocchi — ant polių virš jūros stovinti medinė žvejybos konstrukcija, dabar veikianti kaip žuvies restoranas.</p>
       <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.3057,14.4510&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
+            <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.3057,14.4510,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
     </button>
 
     <button class="card" data-id="3" data-group="coast" data-num="03" style="--group-color:var(--sea)">
@@ -399,6 +403,7 @@
       <span class="chips"><span class="chip">55 min – 1 val.</span><span class="chip">A14 / SS16</span></span>
       <p class="card-desc">Ant kalvos įsikūręs viduramžių miestelis su Palazzo d'Avalos rūmais. Netoliese — Vasto Marina ir Punta Penna paplūdimiai.</p>
       <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.1046,14.7059&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
+            <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.1046,14.7059,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
     </button>
 
     <button class="card" data-id="4" data-group="mountain" data-num="04" style="--group-color:var(--olive)">
@@ -407,6 +412,7 @@
       <span class="chips"><span class="chip">1 val.</span><span class="chip">A25</span></span>
       <p class="card-desc">Abruzzo regiono sostinė. Istorinis centras iš dalies atstatytas po 2009 m. žemės drebėjimo; Bazilika di Collemaggio, Forte Spagnolo.</p>
       <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.3507,13.3999&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
+            <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.3507,13.3999,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
     </button>
 
     <button class="card" data-id="5" data-group="mountain" data-num="05" style="--group-color:var(--olive)">
@@ -415,6 +421,7 @@
       <span class="chips"><span class="chip">1 val. 15 min</span><span class="chip">Assergi</span></span>
       <p class="card-desc">Funikulierius kelia į „mažuoju Tibetu“ vadinamą plokščiakalnę (~2100 m) Gran Sasso parke — žygiai ir vaizdai į Corno Grande. Čia veikia garsiausias regiono keltuvas „Funivia del Gran Sasso d'Italia“, keliantis dideles gondolas iš Fonte Cerreto slėnio (<a href="https://www.ilgransasso.it/la-stazione/" target="_blank" rel="noopener">šaltinis</a>).</p>
       <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.4428,13.5577&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
+            <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.4428,13.5577,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
     </button>
 
     <button class="card" data-id="6" data-group="deep" data-num="06" style="--group-color:var(--clay)">
@@ -423,6 +430,7 @@
       <span class="chips"><span class="chip">1 val. 50 min</span><span class="chip">per Sulmoną</span></span>
       <p class="card-desc">Didžiausias natūralus ežeras Abruzzo regione, atsiradęs po nuošliaužos. Aplink — pėsčiųjų takai ir du paplūdimiai maudytis vasarą. Miestelyje veikia kėdučių keltuvas „Seggiovia Colle Rotondo“ (~1600 m) — dažnai dirba su pertraukomis, patikrinkite prieš vykstant (<a href="https://www.visitscanno.com/poi-scanno/seggiovia-scanno/" target="_blank" rel="noopener">šaltinis</a>).</p>
       <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=41.9217,13.8637&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
+            <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@41.9217,13.8637,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
     </button>
 
     <button class="card" data-id="7" data-group="roma" data-num="07" style="--group-color:var(--roma)">
@@ -431,6 +439,7 @@
       <span class="chips"><span class="chip">~2 val.</span><span class="chip">A25 / A24</span></span>
       <p class="card-desc">Italijos sostinė su pasaulinio garso istoriniu centru — Koliziejumi, Romos forumu, Vatikanu. Toliausiai nutolusi kryptis — geriau atskirai dienai ar dviem.</p>
       <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=41.8967,12.4822&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
+            <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@41.8967,12.4822,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
     </button>
 
     <button class="card" data-id="8" data-group="cave" data-num="08" style="--group-color:var(--cave)">
@@ -439,6 +448,7 @@
       <span class="chips"><span class="chip">~50 min</span><span class="chip">A14</span></span>
       <p class="card-desc">Vienas aukščiausiai Europoje esančių lankomų urvų Majella parke (įėjimas 1475 m). Keltuvas (~20 min) + 280–320 laiptelių; ekskursija ~3 val., ~27 €. Viduje ~10°C, didelė drėgmė — reikia šiltos aprangos. Veikia tik šiltuoju sezonu (<a href="https://www.grottedelcavallone.it/en/information/advice-for-the-visit" target="_blank" rel="noopener">šaltinis</a>).</p>
       <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.0359,14.1565&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
+            <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.0359,14.1565,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
     </button>
 
   </div>
