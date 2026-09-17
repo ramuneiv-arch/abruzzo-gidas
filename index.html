@@ -24,6 +24,8 @@
     --clay-tint:rgba(217,139,79,.16);
     --roma:#D4AF6A;
     --roma-tint:rgba(212,175,106,.16);
+    --cave:#B98CE0;
+    --cave-tint:rgba(185,140,224,.16);
 
     --card-bg:var(--panel);
     --radius:6px;
@@ -343,7 +345,7 @@
 
 <div class="hero">
   <h1>Abruzzo nuo Pescara</h1>
-  <p>Septyni objektai, sugrupuoti į keturias kryptis. Pasirinkite objektą sąraše — jis bus pažymėtas žemėlapyje.</p>
+  <p>Aštuoni objektai, sugrupuoti į penkias kryptis. Pasirinkite objektą sąraše — jis bus pažymėtas žemėlapyje.</p>
   <p class="version-switch"><a href="variantas2.html">Kitas dizainas (labiau pritaikytas telefonui) →</a></p>
 </div>
 
@@ -380,6 +382,7 @@
         <path class="route" data-group="mountain" d="M448,151 L294,166 L257,239" stroke="var(--olive)"/>
         <path class="route" data-group="deep" d="M448,151 L366,583" stroke="var(--clay)"/>
         <path class="route" data-group="roma" d="M448,151 L43,603" stroke="var(--roma)"/>
+        <path class="route" data-group="cave" d="M448,151 L434,491" stroke="var(--cave)"/>
       </g>
 
       <!-- Pescara -->
@@ -446,6 +449,14 @@
         <text y="1">7</text>
       </g>
       </a>
+
+      <a href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.0359,14.1565&travelmode=driving" target="_blank" rel="noopener">
+      <g class="marker" data-id="8" data-group="cave" transform="translate(434,491)">
+        <circle class="halo" r="13" fill="var(--cave)"/>
+        <circle class="dot" r="11" fill="var(--cave)" stroke="var(--bg)" stroke-width="2"/>
+        <text y="1">8</text>
+      </g>
+      </a>
     </svg>
 
 
@@ -457,6 +468,7 @@
       <span class="legend-item"><span class="legend-dot" style="background:var(--olive)"></span>Kalnai</span>
       <span class="legend-item"><span class="legend-dot" style="background:var(--clay)"></span>Kalnų ežeras</span>
       <span class="legend-item"><span class="legend-dot" style="background:var(--roma)"></span>Roma</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--cave)"></span>Urvas</span>
     </div>
 
     <div class="tabs" id="tabs">
@@ -465,6 +477,7 @@
       <button class="tab" data-filter="mountain"><span class="dot" style="background:var(--olive)"></span>Kalnai</button>
       <button class="tab" data-filter="deep"><span class="dot" style="background:var(--clay)"></span>Kalnų ežeras</button>
       <button class="tab" data-filter="roma"><span class="dot" style="background:var(--roma)"></span>Roma</button>
+      <button class="tab" data-filter="cave"><span class="dot" style="background:var(--cave)"></span>Urvas</button>
     </div>
   </div>
 
@@ -579,6 +592,27 @@
             <span class="chips"><span class="chip">207 km</span><span class="chip">~2 val.</span></span>
             <p class="card-desc">Italijos sostinė su pasaulinio garso istoriniu centru — Koliziejumi, Romos forumu, Vatikanu. Kelias veda per A25 ir A24 greitkelius per Apeninus.</p>
             <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=41.8967,12.4822&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
+          </span>
+        </button>
+
+      </div>
+    </section>
+
+    <section class="group" style="--group-color:#B98CE0; --group-tint:rgba(185,140,224,.16);">
+      <div class="group-head">
+        <h2>5 kryptis — Urvas</h2>
+        <span class="group-road">A14, į pietus nuo Pescara</span>
+      </div>
+      <p class="group-note">Veikia tik šiltuoju sezonu — vasarą kasdien, pavasarį ir rudenį tik savaitgaliais. Prieš vykstant patikrinkite darbo laiką oficialioje svetainėje.</p>
+      <div class="cards">
+
+        <button class="card" data-id="8" data-group="cave">
+          <span class="num">8</span>
+          <span>
+            <p class="card-title">Grotta del Cavallone</p>
+            <span class="chips"><span class="chip">46 km</span><span class="chip">~50 min</span></span>
+            <p class="card-desc">Įspūdingas urvas Majella nacionaliniame parke — vienas aukščiausiai Europoje esančių lankomų urvų (įėjimas 1475 m aukštyje). Pasiekiamas atviru keltuvu (~20 min) ir 280–320 laiptelių; visa ekskursija su gidu trunka ~3 val., suaugusiam kainuoja ~27 €. Viduje visada ~10°C ir didelė drėgmė — būtina šilta apranga ir tvirti batai; šalmus išduoda vietoje (<a href="https://www.grottedelcavallone.it/en/information/advice-for-the-visit" target="_blank" rel="noopener">šaltinis</a>, <a href="https://en.wikipedia.org/wiki/Grotta_del_Cavallone" target="_blank" rel="noopener">šaltinis</a>).</p>
+            <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.0359,14.1565&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
           </span>
         </button>
 

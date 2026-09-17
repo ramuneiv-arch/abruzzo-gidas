@@ -20,6 +20,7 @@
     --olive:#8FBE6B;
     --clay:#D98B4F;
     --roma:#D4AF6A;
+    --cave:#B98CE0;
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
@@ -258,7 +259,7 @@
 <div class="hero">
   <div class="hero-inner">
     <h1>Abruzzo nuo Pescara</h1>
-    <p class="lead">Septyni objektai. Filtruokite pagal kryptį arba spauskite bet kurį objektą — jis sutaps su tašku žemėlapyje ir atvirkščiai.</p>
+    <p class="lead">Aštuoni objektai. Filtruokite pagal kryptį arba spauskite bet kurį objektą — jis sutaps su tašku žemėlapyje ir atvirkščiai.</p>
     <p class="version-switch"><a href="index.html">← Grįžti į pagrindinę versiją</a></p>
   </div>
 
@@ -291,6 +292,7 @@
         <path class="route" data-group="mountain" d="M448,123 L294,135 L257,195" stroke="var(--olive)"/>
         <path class="route" data-group="deep" d="M448,123 L366,475" stroke="var(--clay)"/>
         <path class="route" data-group="roma" d="M448,123 L43,492" stroke="var(--roma)"/>
+        <path class="route" data-group="cave" d="M448,123 L434,401" stroke="var(--cave)"/>
       </g>
 
       <!-- Pescara -->
@@ -351,6 +353,13 @@
         <text y="1">7</text>
       </g>
       </a>
+      <a href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.0359,14.1565&travelmode=driving" target="_blank" rel="noopener">
+      <g class="marker" data-id="8" data-group="cave" tabindex="0" role="button" aria-label="8. Grotta del Cavallone" transform="translate(434,401)">
+        <circle class="halo" r="13" fill="var(--cave)"/>
+        <circle class="dot" r="11" fill="var(--cave)" stroke="var(--bg)" stroke-width="2"/>
+        <text y="1">8</text>
+      </g>
+      </a>
     </svg>
     <p class="map-hint" id="mapHint">Pasirinkite objektą — kortelėje arba žemėlapyje.</p>
   </div>
@@ -361,6 +370,7 @@
     <button class="tab" data-filter="mountain"><span class="dot" style="background:var(--olive)"></span>Kalnai</button>
     <button class="tab" data-filter="deep"><span class="dot" style="background:var(--clay)"></span>Kalnų ežeras</button>
     <button class="tab" data-filter="roma"><span class="dot" style="background:var(--roma)"></span>Roma</button>
+    <button class="tab" data-filter="cave"><span class="dot" style="background:var(--cave)"></span>Urvas</button>
   </div>
 </div>
 
@@ -421,6 +431,14 @@
       <span class="chips"><span class="chip">~2 val.</span><span class="chip">A25 / A24</span></span>
       <p class="card-desc">Italijos sostinė su pasaulinio garso istoriniu centru — Koliziejumi, Romos forumu, Vatikanu. Toliausiai nutolusi kryptis — geriau atskirai dienai ar dviem.</p>
       <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=41.8967,12.4822&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
+    </button>
+
+    <button class="card" data-id="8" data-group="cave" data-num="08" style="--group-color:var(--cave)">
+      <span class="card-eyebrow"><span class="dot"></span>Urvas · 46 km</span>
+      <p class="card-title">Grotta del Cavallone</p>
+      <span class="chips"><span class="chip">~50 min</span><span class="chip">A14</span></span>
+      <p class="card-desc">Vienas aukščiausiai Europoje esančių lankomų urvų Majella parke (įėjimas 1475 m). Keltuvas (~20 min) + 280–320 laiptelių; ekskursija ~3 val., ~27 €. Viduje ~10°C, didelė drėgmė — reikia šiltos aprangos. Veikia tik šiltuoju sezonu (<a href="https://www.grottedelcavallone.it/en/information/advice-for-the-visit" target="_blank" rel="noopener">šaltinis</a>).</p>
+      <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.0359,14.1565&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
     </button>
 
   </div>
