@@ -217,6 +217,36 @@
   .map-link:hover{ text-decoration:underline; }
   .food-link{ opacity:.8; }
 
+  .nearby{
+    margin-top:.8rem;
+    padding-top:.7rem;
+    border-top:1px dashed var(--line);
+    position:relative;
+  }
+  .nearby-title{
+    font-size:.76rem;
+    font-weight:600;
+    color:var(--ink-soft);
+    margin:0 0 .4rem;
+  }
+  .nearby ul{
+    margin:0;
+    padding-left:1.1rem;
+    display:flex;
+    flex-direction:column;
+    gap:.3rem;
+  }
+  .nearby li{
+    font-size:.8rem;
+    color:var(--ink-soft);
+  }
+  .nearby li strong{ color:var(--ink); }
+  .nearby a{
+    color:var(--group-color, var(--sea));
+    font-weight:600;
+    text-decoration:none;
+  }
+  .nearby a:hover{ text-decoration:underline; }
   /* ---------- SVG markers ---------- */
   .map-svg a{ cursor:pointer; }
   .marker{ cursor:pointer; }
@@ -299,11 +329,12 @@
 
       <!-- Pescara -->
       <a href="https://www.google.com/maps/search/restaurants/@42.4618,14.2160,14z" target="_blank" rel="noopener" aria-label="Kur pavalgyti Pescaroje">
-      <g>
-        <circle cx="448" cy="123" r="7" fill="var(--amber)" stroke="var(--bg)" stroke-width="2"/>
-        <text x="448" y="106" text-anchor="middle" font-family="Bricolage Grotesque" font-size="12" font-weight="700" fill="var(--amber)">PESCARA</text>
+      <g class="marker" data-id="0" data-group="start" transform="translate(448,123)">
+        <circle class="halo" r="13" fill="var(--amber)"/>
+        <circle class="dot" r="7" fill="var(--amber)" stroke="var(--bg)" stroke-width="2"/>
       </g>
       </a>
+      <text x="448" y="106" text-anchor="middle" font-family="Bricolage Grotesque" font-size="12" font-weight="700" fill="var(--amber)" pointer-events="none">PESCARA</text>
 
       <!-- markers -->
       <a href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.3521,14.4027&travelmode=driving" target="_blank" rel="noopener">
@@ -379,6 +410,23 @@
 <main>
   <div class="grid" id="grid">
 
+    <button class="card" data-id="0" data-group="start" data-num="P" style="--group-color:var(--amber)">
+      <span class="card-eyebrow"><span class="dot"></span>Starto taškas</span>
+      <p class="card-title">Pescara</p>
+      <span class="chips"><span class="chip">0 km</span></span>
+      <p class="card-desc">Didžiausias Abruzzo regiono miestas ir šio gido pradžios taškas. Modernus pajūrio miestas su ilgu paplūdimiu, žinomas kaip poeto Gabriele D'Annunzio gimtinė.</p>
+      <a class="map-link" href="https://www.google.com/maps?q=42.4618,14.2160" target="_blank" rel="noopener">Žemėlapyje ↗</a>
+      <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.4618,14.2160,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
+      <div class="nearby">
+        <p class="nearby-title">Verta aplankyti netoliese:</p>
+        <ul>
+          <li><strong>Ponte del Mare</strong> — didžiausias dviračių/pėsčiųjų tiltas Italijoje. <a href="https://www.google.com/maps/place/?q=place_id:ChIJ7WfMUV2mMRMRwMWFlo-PxFk" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+          <li><strong>D'Annunzio gimtasis namas-muziejus</strong> — poeto gimtinė senamiestyje. <a href="https://www.google.com/maps/place/?q=place_id:ChIJ5-jtSWumMRMREzs0fcMmndM" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+          <li><strong>Museo delle Genti d'Abruzzo</strong> — regiono etnografijos muziejus. <a href="https://www.google.com/maps/place/?q=place_id:ChIJtXbZHWumMRMRlf_ow09Egvk" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+        </ul>
+      </div>
+    </button>
+
     <button class="card" data-id="1" data-group="coast" data-num="01" style="--group-color:var(--sea)">
       <span class="card-eyebrow"><span class="dot"></span>Pakrantė · 23 km</span>
       <p class="card-title">Ortona</p>
@@ -386,6 +434,14 @@
       <p class="card-desc">Senas pakrantės miestelis su istoriniu centru ir terasa aukštai virš jūros. Pirmasis Costa dei Trabocchi taškas iš šiaurės; žinomas ir iš Antrojo pasaulinio karo istorijos.</p>
       <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.3521,14.4027&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
             <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.3521,14.4027,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
+      <div class="nearby">
+        <p class="nearby-title">Verta aplankyti netoliese:</p>
+        <ul>
+        <li><strong>Castello Aragonese</strong> — įspūdinga pilis ant uolos virš jūros, įėjimas nemokamas. <a href="https://www.google.com/maps/place/?q=place_id:ChIJhxU2d2oEMRMR6OT3WoVXmgU" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+        <li><strong>Passeggiata Orientale</strong> — vaizdinga pakrantės promenada nuo pilies iki uosto. <a href="https://www.google.com/maps/place/?q=place_id:ChIJS2WPtU4FMRMRHpjjrJ0XDpI" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+        <li><strong>Costa dei Trabocchi dviračių takas</strong> — buvusi geležinkelio linija, paversta pajūrio taku. <a href="https://www.google.com/maps/place/?q=place_id:ChIJWVgdJbgFMRMRk8-CQWkyWbo" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+        </ul>
+      </div>
     </button>
 
     <button class="card" data-id="2" data-group="coast" data-num="02" style="--group-color:var(--sea)">
@@ -395,6 +451,14 @@
       <p class="card-desc">Vienas gražiausių trabocchi — ant polių virš jūros stovinti medinė žvejybos konstrukcija, dabar veikianti kaip žuvies restoranas.</p>
       <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.3057,14.4510&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
             <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.3057,14.4510,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
+      <div class="nearby">
+        <p class="nearby-title">Verta aplankyti netoliese:</p>
+        <ul>
+        <li><strong>Promontorio Dannunziano</strong> — apžvalgos aikštelė su vaizdu į Adrijos jūrą. <a href="https://www.google.com/maps/place/?q=place_id:ChIJWZZsdSkDMRMR5B9Cir-He5g" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+        <li><strong>Belvedere Marconi</strong> — panoraminė aikštelė su žiūronais turistams. <a href="https://www.google.com/maps/place/?q=place_id:ChIJ78CVyxkDMRMRFKjSB_ZqHeg" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+        <li><strong>San Vito Chietino paplūdimys</strong> — jaukus pajūris su priėjimu prie dviračių tako. <a href="https://www.google.com/maps/place/?q=place_id:ChIJmVc1pSsDMRMRlCbMlAvg0Fs" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+        </ul>
+      </div>
     </button>
 
     <button class="card" data-id="3" data-group="coast" data-num="03" style="--group-color:var(--sea)">
@@ -404,6 +468,14 @@
       <p class="card-desc">Ant kalvos įsikūręs viduramžių miestelis su Palazzo d'Avalos rūmais. Netoliese — Vasto Marina ir Punta Penna paplūdimiai.</p>
       <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.1046,14.7059&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
             <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.1046,14.7059,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
+      <div class="nearby">
+        <p class="nearby-title">Verta aplankyti netoliese:</p>
+        <ul>
+        <li><strong>Castello Caldoresco</strong> — viduramžių pilies liekanos senamiestyje. <a href="https://www.google.com/maps/place/?q=place_id:ChIJYTs5gFTcMBMRj49-TxXhyeQ" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+        <li><strong>Palazzo d'Avalos</strong> — rūmai su muziejumi ir gražiu sodu. <a href="https://www.google.com/maps/place/?q=place_id:ChIJmQD2BVTcMBMROlrHRGHKzbA" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+        <li><strong>Pontile di Vasto Marina</strong> — įsimylėjėlių molas su vaizdu į pakrantę. <a href="https://www.google.com/maps/place/?q=place_id:ChIJdxP3NzjdMBMRxroOPUCBmiA" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+        </ul>
+      </div>
     </button>
 
     <button class="card" data-id="4" data-group="mountain" data-num="04" style="--group-color:var(--olive)">
@@ -413,6 +485,14 @@
       <p class="card-desc">Abruzzo regiono sostinė. Istorinis centras iš dalies atstatytas po 2009 m. žemės drebėjimo; Bazilika di Collemaggio, Forte Spagnolo.</p>
       <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.3507,13.3999&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
             <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.3507,13.3999,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
+      <div class="nearby">
+        <p class="nearby-title">Verta aplankyti netoliese:</p>
+        <ul>
+        <li><strong>Fontana delle 99 Cannelle</strong> — simbolinis 99 čiurkšlių fontanas senamiestyje. <a href="https://www.google.com/maps/place/?q=place_id:ChIJZbPYOvbSLxMRufbbyo4m2gc" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+        <li><strong>Fontana Luminosa</strong> — žinomas fontanas miesto centre. <a href="https://www.google.com/maps/place/?q=place_id:ChIJMXY6PADTLxMRjonPZeD6H1o" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+        <li><strong>MUNDA</strong> — Nacionalinis Abruzzo muziejus su meno ir archeologijos kolekcija. <a href="https://www.google.com/maps/place/?q=place_id:ChIJYYR9a_bSLxMRL0nZGsJeL7M" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+        </ul>
+      </div>
     </button>
 
     <button class="card" data-id="5" data-group="mountain" data-num="05" style="--group-color:var(--olive)">
@@ -422,6 +502,13 @@
       <p class="card-desc">Funikulierius kelia į „mažuoju Tibetu“ vadinamą plokščiakalnę (~2100 m) Gran Sasso parke — žygiai ir vaizdai į Corno Grande. Čia veikia garsiausias regiono keltuvas „Funivia del Gran Sasso d'Italia“, keliantis dideles gondolas iš Fonte Cerreto slėnio (<a href="https://www.ilgransasso.it/la-stazione/" target="_blank" rel="noopener">šaltinis</a>).</p>
       <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.4428,13.5577&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
             <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.4428,13.5577,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
+      <div class="nearby">
+        <p class="nearby-title">Verta aplankyti netoliese:</p>
+        <ul>
+        <li><strong>Corno Grande</strong> — aukščiausia Apeninų viršūnė, populiarus žygių tikslas. <a href="https://www.google.com/maps/place/?q=place_id:ChIJNxBQnb7RMRMRzDMveOWGs-s" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+        <li><strong>Fonte Cerreto</strong> — keltuvo apatinė stotis su restoranais ir parkavimu. <a href="https://www.google.com/maps/place/?q=place_id:ChIJz0K2OFYqLhMR781yXNJw3qg" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+        </ul>
+      </div>
     </button>
 
     <button class="card" data-id="6" data-group="deep" data-num="06" style="--group-color:var(--clay)">
@@ -431,6 +518,14 @@
       <p class="card-desc">Didžiausias natūralus ežeras Abruzzo regione, atsiradęs po nuošliaužos. Aplink — pėsčiųjų takai ir du paplūdimiai maudytis vasarą. Miestelyje veikia kėdučių keltuvas „Seggiovia Colle Rotondo“ (~1600 m) — dažnai dirba su pertraukomis, patikrinkite prieš vykstant (<a href="https://www.visitscanno.com/poi-scanno/seggiovia-scanno/" target="_blank" rel="noopener">šaltinis</a>).</p>
       <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=41.9217,13.8637&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
             <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@41.9217,13.8637,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
+      <div class="nearby">
+        <p class="nearby-title">Verta aplankyti netoliese:</p>
+        <ul>
+        <li><strong>Chiesa di Santa Maria dell'Annunziata</strong> — nedidelė bažnytėlė ant ežero kranto. <a href="https://www.google.com/maps/place/?q=place_id:ChIJe4ZE8QoTMBMR3qfyHtcP9N0" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+        <li><strong>Vista Panoramica del Cuore</strong> — apžvalgos taškas su geriausiu vaizdu į širdies formos ežerą. <a href="https://www.google.com/maps/place/?q=place_id:ChIJx2lnx_ETMBMRzQ8M2qzffYU" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+        <li><strong>Frattura Vecchia</strong> — apleistas kaimelis, sugriautas 1915 m. žemės drebėjimo. <a href="https://www.google.com/maps/place/?q=place_id:ChIJ8Uko8IATMBMRy4FGs4DCHxI" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+        </ul>
+      </div>
     </button>
 
     <button class="card" data-id="7" data-group="roma" data-num="07" style="--group-color:var(--roma)">
@@ -440,6 +535,14 @@
       <p class="card-desc">Italijos sostinė su pasaulinio garso istoriniu centru — Koliziejumi, Romos forumu, Vatikanu. Toliausiai nutolusi kryptis — geriau atskirai dienai ar dviem.</p>
       <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=41.8967,12.4822&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
             <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@41.8967,12.4822,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
+      <div class="nearby">
+        <p class="nearby-title">Verta aplankyti netoliese:</p>
+        <ul>
+        <li><strong>Pantheon</strong> — geriausiai išlikęs antikos pastatas Romoje. <a href="https://www.google.com/maps/place/?q=place_id:ChIJqUCGZ09gLxMRLM42IPpl0co" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+        <li><strong>Trevi fontanas</strong> — garsiausias Romos fontanas, tradicija mesti monetą. <a href="https://www.google.com/maps/place/?q=place_id:ChIJ1UCDJ1NgLxMRtrsCzOHxdvY" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+        <li><strong>Piazza del Popolo</strong> — viena gražiausių Romos aikščių su obelisku. <a href="https://www.google.com/maps/place/?q=place_id:ChIJhxbo5fhgLxMRUEPO_f-f7kM" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+        </ul>
+      </div>
     </button>
 
     <button class="card" data-id="8" data-group="cave" data-num="08" style="--group-color:var(--cave)">
@@ -449,6 +552,14 @@
       <p class="card-desc">Vienas aukščiausiai Europoje esančių lankomų urvų Majella parke (įėjimas 1475 m). Keltuvas (~20 min) + 280–320 laiptelių; ekskursija ~3 val., ~27 €. Viduje ~10°C, didelė drėgmė — reikia šiltos aprangos. Veikia tik šiltuoju sezonu (<a href="https://www.grottedelcavallone.it/en/information/advice-for-the-visit" target="_blank" rel="noopener">šaltinis</a>).</p>
       <a class="map-link" href="https://www.google.com/maps/dir/?api=1&origin=42.4618,14.2160&destination=42.0359,14.1565&travelmode=driving" target="_blank" rel="noopener">Žemėlapyje ↗</a>
             <a class="map-link food-link" href="https://www.google.com/maps/search/restaurants/@42.0359,14.1565,14z" target="_blank" rel="noopener">Kur pavalgyti ↗</a>
+      <div class="nearby">
+        <p class="nearby-title">Verta aplankyti netoliese:</p>
+        <ul>
+        <li><strong>Loggetta di Taranta Peligna</strong> — į uolą iškaltas takas su vaizdinga apžvalgos aikštele. <a href="https://www.google.com/maps/place/?q=place_id:ChIJmXS06A1dMBMRK6ANIVWdN4U" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+        <li><strong>Sacrario della Brigata Maiella</strong> — Antrojo pasaulinio karo memorialas. <a href="https://www.google.com/maps/place/?q=place_id:ChIJu6PUbEtcMBMRkxh1LPGjuUU" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+        <li><strong>Grotta Tarì</strong> — nedidelis piemenų prieglaudos urvas kalnuose. <a href="https://www.google.com/maps/place/?q=place_id:ChIJW3y3-MNdMBMRpUnEJRAZ0DY" target="_blank" rel="noopener">žemėlapyje ↗</a></li>
+        </ul>
+      </div>
     </button>
 
   </div>
@@ -513,7 +624,7 @@
       const filter = tab.dataset.filter;
 
       cards.forEach(c => {
-        c.classList.toggle('hidden', filter !== 'all' && c.dataset.group !== filter);
+        c.classList.toggle('hidden', filter !== 'all' && c.dataset.group !== filter && c.dataset.group !== 'start');
       });
       markers.forEach(m => {
         m.classList.toggle('dimmed', filter !== 'all' && m.dataset.group !== filter);
