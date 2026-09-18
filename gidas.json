@@ -53,6 +53,7 @@
           "laikas": "20 min.",
           "aprasymas": "Didžiausias Abruzzo regiono miestas. Modernus pajūrio miestas su ilgu paplūdimiu, žinomas kaip poeto Gabriele D'Annunzio gimtinė.",
           "parduotuves": true,
+          "nuo_starto": true,
           "netoliese": [
             {
               "pavadinimas": "Ponte del Mare",
